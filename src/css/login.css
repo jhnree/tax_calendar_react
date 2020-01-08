@@ -1,0 +1,61 @@
+*{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: .9rem;
+}
+
+div {
+    transition: .3s;
+}
+
+.card-body form input {
+    font-size: .95rem;
+}
+
+.card-body {
+    margin-top: 60px;
+}
+
+.card-body form input:focus {
+    box-shadow: none;
+    border-color:  #01a8dc!important;
+}
+
+.admin-username-avatar:after{
+    content: "";
+    background-image: url('../img/user1.png');
+    background-size: 100% 100%;
+    display: inline-block;
+    width: 20px!important;
+    height: 20px!important;
+    position: relative;
+    top: 3px;
+}
+
+.admin-password-avatar:after{
+    content: "";
+    background-image: url('../img/password.png');
+    background-size: 100% 100%;
+    display: inline-block;
+    width: 20px!important;
+    height: 20px!important;
+
+    position: relative;
+    top: 3px;
+}
+
+.input-icon {
+    border-right: 0px;
+    border-top-left-radius: 5px!important;
+    border-bottom-left-radius: 5px!important;
+}
+
+#login-btn button{
+    background: #01a8dc;
+    color: white;
+    font-size: 1rem;
+}
+
+a {
+    font-size: .9rem;
+    color: #349ee6;
+}

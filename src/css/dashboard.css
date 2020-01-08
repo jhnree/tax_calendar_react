@@ -1,0 +1,182 @@
+
+.bg-standard{
+    background: #01a8dc!important;
+}
+
+.link {
+    color: white!important;
+    text-decoration: none!important;
+    font-size: 1.3rem!important;
+}
+
+.bell{
+    font-size: 1.1rem!important;
+    color: white!important;
+    cursor: pointer;
+}
+
+.bell:hover i{
+    color: #0583ab!important;
+}
+
+.bell span{
+    font-size: .7rem!important;
+    background: #b71d11!important;
+}
+
+.profile-icon::after {
+    content: "";
+    background-image: url('../img/icons/user_male1.png');
+    background-size: 100% 100%;
+    display: inline-block;
+    width: 20px!important;
+    height: 20px!important;
+
+    position: relative;
+    top: 3px;
+}
+
+.profile-icon:hover:after{
+    background-image: url('../img/icons/user_male1_dark.png');
+}
+
+
+
+.date{
+    font-size: .7rem;
+}
+.date.active{
+    background: #01a8dc;
+    border-radius: 20px;
+    color: #fff;
+    padding: 5px;
+    font-weight: 900;
+}
+.caledar-title{
+    font-weight: bolder;
+    font-size: 1.5rem;
+}
+.caledar-title .button{
+    font-size: 1rem;
+}
+.date-button:hover{
+    background: rgb(1,168,220,.1);
+    transition: .2s;
+    cursor: pointer;
+}
+.event{
+    background: #01a8dc;
+    border-radius: 20px;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: 900;
+    margin-bottom: 4px;
+}
+.event:hover{
+    color: white!important;
+    background: #017b9e;
+    transition: .2s;
+    cursor: pointer;
+}
+.event:focus{
+    box-shadow: none;
+    background: #01a8dc!important;
+    color: white;
+}
+td{
+    position: relative;
+}
+
+
+.current{
+    color: #006c8e;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+.current-day{
+    color: #333;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.sidenav{
+    position: fixed;
+    height: 100%;
+    overflow-y: scroll;
+    z-index: 1;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.events{
+    color: whitesmoke;
+    background: #006c8e;
+    overflow-y: auto;
+    min-height: 100px;
+    max-height: 380px;
+}
+
+.time-scheduled{
+    letter-spacing: 1px;
+    font-weight: 100;
+}
+
+.commitment{
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.title{
+    color: #333;
+    font-size: 1.3rem;
+    /* font-weight: 600; */
+    letter-spacing: 2px;
+}
+
+.sidenav hr{
+    background: whitesmoke;
+}
+
+.content{
+    padding-top: 25px;
+    overflow-y: auto;
+}
+
+.time-scheduled p{
+    font-size: .8rem!important;
+}
+
+.modal-content{
+    /* background: linear-gradient(120deg, #006c8e, #01a8dc, #006c8e); */
+}
+
+.modal-body table{
+    table-layout: fixed;
+}
+
+.modal-body table td{
+    word-wrap: normal;
+}
+
+.f-default{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.letter-space-1{
+    letter-spacing: 1px;
+}
+
+.displayedMonth{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 1.8rem!important;
+    font-weight: 500;
+    /* margin-top: 10px!important; */
+    /* color: violet; */
+}
+
+.calendar-title a i{
+    font-size: 1.4rem!important;
+    /* font-weight: 400; */
+    /* color: wheat!important; */
+}
