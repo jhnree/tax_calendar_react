@@ -1,7 +1,19 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import auth from '../auth';
+
 
 class Header extends Component {
+    constructor(props){
+        super(props)
+    }
+    
+    toLoginPage = () => {
+
+        const {history} = this.props;
+        history.push("/");
+    }
+    
     render() {
         return (
             <nav className="navbar navbar-expand-sm navbar-dark bg-standard fixed-top">
@@ -12,20 +24,20 @@ class Header extends Component {
                 <div className="collapse navbar-collapse" id="collapsibleNavbar">
                     <ul className="navbar-nav ml-auto">
                         <li className="nav-item dropdown" id="notif">
-                            <Link className="nav-link bell" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" to="/">
+                            <button className="btn nav-link bell" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" to="/">
                                 <i className="far fa-bell"></i>
                                 <span className="badge rounded-circle" id="notificationCount"></span>
-                            </Link>
+                            </button>
                             <div id="notificationDropdown" className="pt-0 dropdown-menu dropdown-menu-right" aria-labelledby="notification" style={{width: "300px"}}>
                                 
                             </div>
                         </li>
                         <li className="nav-item dropdown">
-                            <a className="nav-link" href="#" id="profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="profile-icon"></i></a>
+                            <a className="nav-link" id="profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="profile-icon"></i></a>
                             <div id="profile-menu" className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownId">
                                 <label className="dropdown-item">asd</label>
                                 <hr className="my-1"/>
-                                <Link className="dropdown-item" to="/logout"><i className="log-out-icon"></i><span className="pl-2">Logout</span></Link>
+                                <button type="button" className="btn dropdown-item" onClick={() => {auth.Logout(() => {this.props.history.push("/")})}}><i className="log-out-icon"></i><span className="pl-2">Logout</span></button>
                             </div>
                         </li>
                     </ul>

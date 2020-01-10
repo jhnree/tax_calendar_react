@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 
 import '../../css/dashboard.css'
 
@@ -14,6 +13,7 @@ class Dashboard extends Component {
             currentMonth:'',
             currentYear:'',
             dateToday:'',
+            dayToday:'',
             date:''
         }
     }
@@ -24,7 +24,14 @@ class Dashboard extends Component {
             currentMonth:date.getMonth(),
             currentYear:date.getFullYear(),
             dateToday:this.ConvertMonth(date.getMonth()) + ' ' + date.getDate() + ', ' + date.getFullYear(),
+            dayToday:this.ConvertDay(date.getDay()),
         })
+    }
+
+    ConvertDay = (day) => {
+        let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+        return days[day];
     }
 
     ConvertMonth = (month) => {
@@ -52,7 +59,7 @@ class Dashboard extends Component {
         var lastDay;
         var currentYear = this.state.currentYear;
 
-        if(currentYear != ''){
+        if(currentYear !== ''){
             month = this.state.currentMonth;
             year = this.state.currentYear
         }
@@ -62,7 +69,7 @@ class Dashboard extends Component {
         var firstRow = [];
         var followingRow = [];
 
-        if(week1 == 7){
+        if(week1 === 7){
             week1 = 0;
         }
         for(var i = 0; i < 7; i++){
@@ -78,7 +85,7 @@ class Dashboard extends Component {
         for(var x = 0; x <= 4; x++){
             var col = [];
             for(var d = 1; d <= 7; d++){
-                if(day!=lastDay.getDate()){
+                if(day!==lastDay.getDate()){
                     day++;
                     col.push(<td key={d}>{day}</td>)
                 }
@@ -102,7 +109,7 @@ class Dashboard extends Component {
     GotoPrevMonth = () => {
         var currMonth = this.state.currentMonth;
         var currYear = this.state.currentYear;
-        if(currMonth == 0){
+        if(currMonth === 0){
             this.setState({
                 currentMonth:11,
                 currentYear:currYear-1,
@@ -118,7 +125,7 @@ class Dashboard extends Component {
     GotoNextMonth = () => {
         var currMonth = this.state.currentMonth;
         var currYear = this.state.currentYear;
-        if(currMonth == 11){
+        if(currMonth === 11){
             this.setState({
                 currentMonth:0,
                 currentYear:currYear+1,
@@ -138,10 +145,10 @@ class Dashboard extends Component {
                 <div className="row pt-5">
                     <div className="col-md-3 shadow sidenav d-none d-md-block p-4">
                         <div>
-                            <span className="current">{this.state.dateToday}</span>
+                            <span className="current">{this.state.dateToday}</span><br/>
                         </div>
                         <div>
-                            <span className="current-day"></span>
+                            <span className="current-day">{this.state.dayToday}</span>
                         </div>
                         <hr/>
                         <div className="text-center mt-4 title pb-2">Deadlines</div>
@@ -154,13 +161,13 @@ class Dashboard extends Component {
                             <div className="calendar-title">
                                 <div className="row">
                                     <div className="col-3">
-                                        <button onClick={this.GotoPrevMonth} className="btn text-dark pr-2" to="/"><i className="fas fa-chevron-left"/></button>
+                                        <button onClick={this.GotoPrevMonth} className="btn text-dark pr-2"><i className="fas fa-chevron-left"/></button>
                                     </div>
                                     <div className="col-6">
                                         <span className="displayedMonth">{this.ConvertMonth(this.state.currentMonth)} {this.state.currentYear}</span>
                                     </div>
                                     <div className="col-3">
-                                        <button onClick={this.GotoNextMonth} className="btn text-dark pl-2" to="/"><i className="fas fa-chevron-right"/></button>
+                                        <button onClick={this.GotoNextMonth} className="btn text-dark pl-2"><i className="fas fa-chevron-right"/></button>
                                     </div>
                                 </div>
                             </div>
