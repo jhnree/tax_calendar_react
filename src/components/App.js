@@ -10,10 +10,10 @@ class App extends Component {
     render() {
         return (
             <BrowserRouter>
-                <div>
+                <Switch>
                     <Route exact path="/" component={Login}/>
                     <ProtectedRoute exact path="/Dashboard" component={Dashboard}/>
-                </div>
+                </Switch>
             </BrowserRouter>
         );
     }

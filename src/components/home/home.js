@@ -14,7 +14,8 @@ class Dashboard extends Component {
             currentYear:'',
             dateToday:'',
             dayToday:'',
-            date:''
+            date:'',
+            userId:localStorage.getItem("id"),
         }
     }
 
@@ -26,6 +27,23 @@ class Dashboard extends Component {
             dateToday:this.ConvertMonth(date.getMonth()) + ' ' + date.getDate() + ', ' + date.getFullYear(),
             dayToday:this.ConvertDay(date.getDay()),
         })
+        
+        // let userid = localStorage.getItem("id");
+
+        // const UserAccountLink = `/api/user/${userid}`
+        // fetch(UserAccountLink,
+        //         {
+        //             method:'GET', 
+        //             headers: {
+        //                 'Content-Type':'application/json',
+        //                 'Accept':'application/json'
+        //                 }
+        //         })
+        // .then(response => response.json())
+        // .then(json => {
+        //     this.setState({userName:json['username'], user:json})
+        // })
+        // .catch(console.log)
     }
 
     ConvertDay = (day) => {

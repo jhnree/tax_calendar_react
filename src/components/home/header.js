@@ -4,14 +4,34 @@ import auth from '../auth';
 
 
 class Header extends Component {
+
     constructor(props){
         super(props)
-    }
-    
-    toLoginPage = () => {
 
-        const {history} = this.props;
-        history.push("/");
+        this.state = {
+            id:localStorage.getItem("id"),
+            userName:'',
+            user:[]
+        }
+    }
+
+    componentDidMount(){
+
+        const UserAccountLink = `/api/user/${this.state.id}`
+        fetch(UserAccountLink,
+                {
+                    method:'GET', 
+                    headers: {
+                        'Content-Type':'application/json',
+                        'Accept':'application/json'
+                        }
+                })
+        .then(response => response.json())
+        .then(json => {
+            this.setState({ userName:json['username'], user:json })
+        })
+        .catch(console.log)
+        
     }
     
     render() {
@@ -33,11 +53,11 @@ class Header extends Component {
                             </div>
                         </li>
                         <li className="nav-item dropdown">
-                            <a className="nav-link" id="profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="profile-icon"></i></a>
+                            <button className="btn nav-link" id="profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="profile-icon"></i></button>
                             <div id="profile-menu" className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownId">
-                                <label className="dropdown-item">asd</label>
+                                <label className="dropdown-item">{this.state.userName}</label>
                                 <hr className="my-1"/>
-                                <button type="button" className="btn dropdown-item" onClick={() => {auth.Logout(() => {this.props.history.push("/")})}}><i className="log-out-icon"></i><span className="pl-2">Logout</span></button>
+                                <Link to="/" className="btn dropdown-item" onClick={() => { auth.Logout( () => {} ) } }><i className="log-out-icon"></i><span className="pl-2">Logout</span></Link>
                             </div>
                         </li>
                     </ul>

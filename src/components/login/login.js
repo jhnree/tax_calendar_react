@@ -64,18 +64,20 @@ class Login extends Component {
         .then(response => response.json())
         .then(json => {
                 if(json === 0){
-                    {toastError('All fields are required!')}
+                    toastError('All fields are required!')
                 }
                 else if(json === 1){
-                    {toastError("User doesn't exist!")}
+                    toastError("User doesn't exist!")
                 }
                 else if(json === 2){
-                    {toastError("Incorrect password!")}
+                    toastError("Incorrect password!")
                 }
                 else{
-                    {toastSuccess("Successfully Login")}
+                    toastSuccess("Successfully Login")
+                    // console.log(json.id);
                     auth.Login(() => {
-                        this.props.history.push("/dashboard"); 
+                        this.props.history.push('/dashboard'); 
+                        localStorage.setItem("id", json.id)
                     })
                 }
             }
