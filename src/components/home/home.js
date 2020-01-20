@@ -16,7 +16,12 @@ class Dashboard extends Component {
             dayToday:'',
             date:'',
             userId:localStorage.getItem("id"),
+            EventList:[],
+            eventToDisplay:[],
         }
+        this.EventList();
+        // var date = new Date();
+        // console.log(this.hasEvent(date.getFullYear(), this.ConvertMonth(date.getMonth()), date.getDate()))
     }
 
     componentDidMount(){
@@ -28,22 +33,6 @@ class Dashboard extends Component {
             dayToday:this.ConvertDay(date.getDay()),
         })
         
-        // let userid = localStorage.getItem("id");
-
-        // const UserAccountLink = `/api/user/${userid}`
-        // fetch(UserAccountLink,
-        //         {
-        //             method:'GET', 
-        //             headers: {
-        //                 'Content-Type':'application/json',
-        //                 'Accept':'application/json'
-        //                 }
-        //         })
-        // .then(response => response.json())
-        // .then(json => {
-        //     this.setState({userName:json['username'], user:json})
-        // })
-        // .catch(console.log)
     }
 
     ConvertDay = (day) => {
@@ -68,6 +57,89 @@ class Dashboard extends Component {
         return newDate;
     }
 
+    EventList = (year, month, day) => {
+        const ApiLink = 'api/dailyEvent'
+        fetch(ApiLink, 
+                {
+                    method:'get', 
+                    headers: {
+                        'Content-Type':'application/json',
+                        'Accept':'application/json'
+                        },
+                })
+        .then(response => response.json())
+        .then(json => {
+            this.setState({EventList:json})
+            // console.log(json)
+        })
+        .catch(console.log())
+
+        
+        console.log("eventList: ", this.state.EventList)
+    }
+
+    isToday = (month, day, year) => {
+        var date = new Date();
+        var m = date.getMonth();
+        var d = date.getDate();
+        var y = date.getFullYear();
+        var today = m + '-' + d + '-' + y;
+        var toCheck = month + '-' + day + '-' + year;
+        if(today === toCheck){
+            return true;
+        }
+        return false;
+    }
+
+    standardizedMonth = (month) => {
+        var m = month.toString();
+        if(m.length === 1){
+            return '0' + (month + 1);
+        }
+        return month + 1;
+    }
+
+    standardizedDay = (day) => {
+        var d = day.toString();
+        if(d.length === 1){
+            return '0' + day;
+        }
+        return day;
+    }
+
+    hasEvent = (year, month, day) => {
+        var date = year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day);
+        var events = this.state.EventList;
+        var arr = [];
+        events.forEach((val, index)=>{
+            if(val['event_deadline'] === date){
+                arr.push(val);
+            }
+        })
+        return arr;
+    }
+
+    sample = (i, event, day) => {
+        var td = [];
+        event.forEach((val, index)=>{
+            td.push(<div className="event" key={val['id']}>{val['event_title']}</div>)
+        })
+        return td;
+    }
+
+    dayClick(event) {
+        var date = event.target.dataset.value;
+        // var split = date.split('-');
+        var events = this.state.EventList;
+        var arr = [];
+        events.forEach((val, index)=>{
+            if(val['event_deadline'] === date){
+                arr.push(val);
+            }
+        })
+        console.log(date);
+    }
+    
     TableBody = () => {
         let day=1;
         var date = new Date();
@@ -76,7 +148,8 @@ class Dashboard extends Component {
         var startDay;
         var lastDay;
         var currentYear = this.state.currentYear;
-
+        // var Events = this.state.EventList;
+        
         if(currentYear !== ''){
             month = this.state.currentMonth;
             year = this.state.currentYear
@@ -86,26 +159,61 @@ class Dashboard extends Component {
         var week1 = this.ISO_numeric_date(startDay);
         var firstRow = [];
         var followingRow = [];
-
+        
         if(week1 === 7){
             week1 = 0;
         }
+
         for(var i = 0; i < 7; i++){
             if(week1 > i){
                 firstRow.push(<td key={i}></td>);
             }
             else{
-                firstRow.push(<td key={i}>{day}</td>);
+                let event = this.hasEvent(year,month,day);
+                if(this.isToday(month, day, year)){
+                    if(typeof event === 'undefined'){
+                        firstRow.push(<td key={i} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span className="today">{day}</span></td>);
+                    }
+                    else{
+                        firstRow.push(<td key={i} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span className="today">{day}</span>{this.sample(i, event, day)}</td>);
+                    }
+                }
+                else{
+                    if(typeof event === 'undefined'){
+                        firstRow.push(<td key={i} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span>{day}</span></td>);
+                    }
+                    else{
+                        firstRow.push(<td key={i} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span>{day}</span>{this.sample(i, event, day)}</td>);
+                    }
+                }
                 day++;
             }
         }
+
         day--;
-        for(var x = 0; x <= 4; x++){
+        
+        for(var x = 0; x <= 4; x++){                                                                                                                                                                                                                                                                                     
             var col = [];
             for(var d = 1; d <= 7; d++){
                 if(day!==lastDay.getDate()){
                     day++;
-                    col.push(<td key={d}>{day}</td>)
+                    let event = this.hasEvent(year,month,day);
+                    if(this.isToday(month, day, year)){
+                        if(typeof event === 'undefined'){
+                            col.push(<td key={d} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span className="today">{day}</span></td>)
+                        }
+                        else{
+                            col.push(<td key={d} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span className="today">{day}</span>{this.sample(i, event, day)}</td>)
+                        }
+                    }
+                    else{
+                        if(typeof event === 'undefined'){
+                            col.push(<td key={d} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span>{day}</span></td>)
+                        }
+                        else {
+                            col.push(<td key={d} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span>{day}</span>{this.sample(i, event, day)}</td>)
+                        }
+                    }
                 }
                 else{
                     col.push(<td key={d}></td>)
@@ -113,7 +221,6 @@ class Dashboard extends Component {
             }
             followingRow.push(<tr key={x}>{col}</tr>)
         }
-        // console.log();
         return(
             <tbody className="calendar">
                 <tr>
@@ -171,7 +278,7 @@ class Dashboard extends Component {
                         <hr/>
                         <div className="text-center mt-4 title pb-2">Deadlines</div>
                         <div className="events rounded p-3 shadow">
-                            <div className="text-center"><i className="fas fa-circle-notch fa-spin fa-2x"></i></div>
+                            <div className="text-center">asd</div>
                         </div>
                     </div>
                     <div className="col-md-9 offset-md-3 mt-3">

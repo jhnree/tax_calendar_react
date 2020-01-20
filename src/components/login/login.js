@@ -74,10 +74,9 @@ class Login extends Component {
                 }
                 else{
                     toastSuccess("Successfully Login")
-                    // console.log(json.id);
                     auth.Login(() => {
-                        this.props.history.push('/dashboard'); 
                         localStorage.setItem("id", json.id)
+                        this.props.history.push('/dashboard'); 
                     })
                 }
             }

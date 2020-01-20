@@ -40,8 +40,6 @@
     background-image: url('../img/icons/user_male1_dark.png');
 }
 
-
-
 .date{
     font-size: .7rem;
 }
@@ -179,4 +177,44 @@ td{
     font-size: 1.4rem!important;
     /* font-weight: 400; */
     /* color: wheat!important; */
+}
+
+.today {
+    border-radius: 75px;
+    background: #01a8dc!important;
+    padding-left: 3px;
+    padding-right: 4px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    color: white;
+    /* padding: 4px 4px 4px 3px; */
+}
+
+.event{
+    background: #01a8dc;
+    border-radius: 20px;
+    color: #fff;
+    padding: 5px 10px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+/* .event:hover{
+    color: white!important;
+    background: #017b9e;
+    transition: .2s;
+    cursor: pointer;
+} */
+/* .event:focus{
+    box-shadow: none;
+    background: #01a8dc!important;
+    color: white;
+} */
+td{
+    position: relative;
+}
+
+.date-button:hover{
+    background: rgb(1,168,220,.1);
+    transition: .2s;
+    cursor: pointer;
 }

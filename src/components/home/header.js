@@ -16,22 +16,24 @@ class Header extends Component {
     }
 
     componentDidMount(){
-
-        const UserAccountLink = `/api/user/${this.state.id}`
+        const UserAccountLink = `api/user/${this.state.id}`
         fetch(UserAccountLink,
                 {
-                    method:'GET', 
+                    method:'get', 
                     headers: {
                         'Content-Type':'application/json',
                         'Accept':'application/json'
-                        }
+                        },
                 })
         .then(response => response.json())
         .then(json => {
             this.setState({ userName:json['username'], user:json })
         })
         .catch(console.log)
-        
+    }
+    
+    componentWillUnmount(){
+        localStorage.clear()
     }
     
     render() {
