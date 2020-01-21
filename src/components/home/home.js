@@ -20,8 +20,6 @@ class Dashboard extends Component {
             eventToDisplay:[],
         }
         this.EventList();
-        // var date = new Date();
-        // console.log(this.hasEvent(date.getFullYear(), this.ConvertMonth(date.getMonth()), date.getDate()))
     }
 
     componentDidMount(){
@@ -70,12 +68,8 @@ class Dashboard extends Component {
         .then(response => response.json())
         .then(json => {
             this.setState({EventList:json})
-            // console.log(json)
         })
         .catch(console.log())
-
-        
-        console.log("eventList: ", this.state.EventList)
     }
 
     isToday = (month, day, year) => {
@@ -122,22 +116,75 @@ class Dashboard extends Component {
     sample = (i, event, day) => {
         var td = [];
         event.forEach((val, index)=>{
-            td.push(<div className="event" key={val['id']}>{val['event_title']}</div>)
+            td.push(<div className="event avoid-clicks" key={val['id']} >
+                        {val['event_title']}
+                    </div>)
         })
         return td;
     }
 
     dayClick(event) {
-        var date = event.target.dataset.value;
-        // var split = date.split('-');
-        var events = this.state.EventList;
-        var arr = [];
+        var date = event.target.dataset.value
+        var events = this.state.EventList
+        var arr = []
         events.forEach((val, index)=>{
             if(val['event_deadline'] === date){
-                arr.push(val);
+                arr.push(val)
             }
         })
-        console.log(date);
+        if(arr.length){
+            this.setState({ eventToDisplay:arr })
+        }
+        else{
+            this.setState({ eventToDisplay:[]})
+        }
+    }
+
+    SideNavEventDisplay = () => {
+        var dayClicked = this.state.eventToDisplay
+        var jsxToReturn = []
+        const title = {
+            fontSize: '1.3rem',
+            fontWeight: '600',
+            align: 'center'
+        }
+
+        const description = {
+            fontSize: '1rem',
+            fontWeight: '300',
+        }
+        
+        const remarks = {
+            fontSize: '.8rem',
+            fontWeight: '100',
+        }
+
+        if(dayClicked.length){
+            dayClicked.forEach((val, index) => {
+                if(val.remarks !== ""){
+                    jsxToReturn.push(<div key={val.id} className="">
+                                        <span style={title}>{val.event_title}</span><br/>
+                                        <span style={description}>{val.event_description}</span><br/><br/>
+                                        <span style={remarks}>{val.remarks}</span><br/>
+                                        <hr/>
+                                    </div>)
+                }
+                else{
+                    jsxToReturn.push(<div key={val.id} className="">
+                                        <span style={title}>{val.event_title}</span><br/>
+                                        <span style={description}>{val.event_description}</span>
+                                        <hr/>
+                                    </div>)
+                }
+            })
+        }
+        else{
+            jsxToReturn.push(<div key="1" className="text-center pt-2">
+                                <span style={title}>No Event</span><br/>
+                                <hr/>
+                            </div>)
+        }
+        return jsxToReturn
     }
     
     TableBody = () => {
@@ -278,7 +325,7 @@ class Dashboard extends Component {
                         <hr/>
                         <div className="text-center mt-4 title pb-2">Deadlines</div>
                         <div className="events rounded p-3 shadow">
-                            <div className="text-center">asd</div>
+                            <this.SideNavEventDisplay/>
                         </div>
                     </div>
                     <div className="col-md-9 offset-md-3 mt-3">

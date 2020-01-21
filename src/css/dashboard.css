@@ -70,7 +70,7 @@
     font-weight: 900;
     margin-bottom: 4px;
 }
-.event:hover{
+/* .event:hover{
     color: white!important;
     background: #017b9e;
     transition: .2s;
@@ -80,7 +80,7 @@
     box-shadow: none;
     background: #01a8dc!important;
     color: white;
-}
+} */
 td{
     position: relative;
 }
@@ -217,4 +217,12 @@ td{
     background: rgb(1,168,220,.1);
     transition: .2s;
     cursor: pointer;
+}
+
+.avoid-clicks {
+    pointer-events: none;
+  }
+
+span {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;
 }

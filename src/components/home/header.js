@@ -11,8 +11,10 @@ class Header extends Component {
         this.state = {
             id:localStorage.getItem("id"),
             userName:'',
-            user:[]
+            user:[],
+            notification:[],
         }
+        
     }
 
     componentDidMount(){
@@ -30,10 +32,38 @@ class Header extends Component {
             this.setState({ userName:json['username'], user:json })
         })
         .catch(console.log)
+        this.userEventNotification();
+    }
+
+    userEventNotification(){
+        const eventNotificationAPI = `api/user-event-notification/${this.state.id}`
+        fetch(eventNotificationAPI,
+            {
+                method:'get', 
+                headers: {
+                    'Content-Type':'application/json',
+                    'Accept':'application/json'
+                    },
+            })
+    .then(response => response.json())
+    .then(json => {
+        this.setState({ notification:json })
+    })
+    .catch(console.log)
     }
     
     componentWillUnmount(){
         localStorage.clear()
+    }
+
+    Notification = () => {
+        var notification = this.state.notification;
+        var jsx = [];
+        notification.forEach(( val, index ) => {
+            jsx.push(<button className="btn form-control btn-success dropdown-item py-0" key={index}><span>{val.event_title}</span></button>)
+        })
+        console.log(notification);
+        return jsx;
     }
     
     render() {
@@ -51,7 +81,8 @@ class Header extends Component {
                                 <span className="badge rounded-circle" id="notificationCount"></span>
                             </button>
                             <div id="notificationDropdown" className="pt-0 dropdown-menu dropdown-menu-right" aria-labelledby="notification" style={{width: "300px"}}>
-                                
+                                <div className="bg-white pt-2 sticky-top"><p className="dropdown-header">Notifications</p><hr className="m-0 mb-2"/></div>
+                                <this.Notification/>
                             </div>
                         </li>
                         <li className="nav-item dropdown">
