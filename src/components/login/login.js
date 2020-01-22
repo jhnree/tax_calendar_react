@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+import auth from '../auth';
+
 import '../../css/login.css';
 
 
@@ -15,7 +17,8 @@ toast.configure({
     draggable: false,
 });
 
-const notify = () => toast.success("Wow so easy !");
+const toastError = (message) => toast.error(message);
+const toastSuccess = (message) => toast.success(message);
 
 const cardHeader = {
     background: '#01a8dc',
@@ -34,6 +37,70 @@ const imgWidth = {
 
 
 class Login extends Component {
+<<<<<<< HEAD
+=======
+
+    constructor(props){
+        super(props)
+
+        this.state = {
+            email:'',
+            password:'',
+        }
+    }
+
+    Login = (event) => {
+        event.preventDefault()
+        const ApiLink = 'api/login'
+        fetch(ApiLink, {
+            method:'POST',
+            headers: {
+                'Content-Type':'application/json',
+                'Accept':'application/json'
+                },
+            body:JSON.stringify({
+                email:this.state.email,
+                password:this.state.password,
+            })
+        })
+        .then(response => response.json())
+        .then(json => {
+                if(json === 0){
+                    toastError('All fields are required!')
+                }
+                else if(json === 1){
+                    toastError("User doesn't exist!")
+                }
+                else if(json === 2){
+                    toastError("Incorrect password!")
+                }
+                else{
+                    toastSuccess("Successfully Login")
+                    auth.Login(() => {
+                        localStorage.setItem("id", json.id)
+                        this.props.history.push('/dashboard'); 
+                    })
+                }
+            }
+        )
+        .catch(console.log())
+    }
+
+    InputChange = (event) => {
+        let name = event.target.name
+
+        switch(name){
+            case 'email':
+                this.setState({email:event.target.value})
+                break;
+            case 'password':
+                this.setState({password:event.target.value})
+                break;
+            default: ;
+        }
+    }
+
+>>>>>>> b09d873332332c24c991e02519e2610ab1679f97
     render() {
         return (
             <div className="container-fluid">
@@ -42,27 +109,39 @@ class Login extends Component {
                         <div className="card shadow-lg">
                             <div className="card-header text-center pb-5 pt-4" style={cardHeader}>
                                 <div style={cardHeaderContent}>
+<<<<<<< HEAD
                                     <img src={require('../../img/taxcalendar1.png')} alt="" className="mx-auto d-block" style={imgWidth}/>
+=======
+                                    <img alt="" src={require('../../img/taxcalendar1.png')} className="mx-auto d-block" style={imgWidth}/>
+>>>>>>> b09d873332332c24c991e02519e2610ab1679f97
                                 </div>
                             </div>
                             <div className="card-body mr-3">
-                                <form>
+                                <form onSubmit={this.Login}>
                                     <div className="input-group">
                                         <div className="input-group-append">
                                             <span className="input-group-text py-0 m-0 input-icon"><i className="admin-username-avatar"></i></span>
                                         </div>
+<<<<<<< HEAD
                                         <input className="form-control font" name="email" type="text" placeholder="Email or Username"/>
                                         
+=======
+                                        <input className="form-control font" name="email" type="text" placeholder="Email or Username" value={this.state.email} onChange={this.InputChange}/>
+>>>>>>> b09d873332332c24c991e02519e2610ab1679f97
                                     </div>
                                     <div className="input-group mt-3">
                                         <div className="input-group-append">
-                                            <span className="input-group-text py-0 m-0 input-icon"><i className="admin-password-avatar" onClick={notify}></i></span>
+                                            <span className="input-group-text py-0 m-0 input-icon"><i className="admin-password-avatar"></i></span>
                                         </div>
+<<<<<<< HEAD
                                         <input className="form-control font" name="password" type="password" placeholder="Password" />
                                        
+=======
+                                        <input className="form-control font" name="password" type="password" placeholder="Password" value={this.state.password} onChange={this.InputChange}/>
+>>>>>>> b09d873332332c24c991e02519e2610ab1679f97
                                     </div>
                                     <div id="login-btn" className="mt-4 pl-3">
-                                        <button className="btn form-control rounded-0">LOGIN</button>
+                                        <button type="submit" className="btn form-control rounded-0">LOGIN</button>
                                     </div>
                                 </form>
                                 <div id="forgotPassword" className="text-center mt-4">
