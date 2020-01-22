@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
-
-import '../../css/dashboard.css'
-
-import Header from './header'
-
-// function testAlert() {
-//     alert('this is a test alert');
-// }
+import '../../css/dashboard.css';
+import Header from './header';
 
 class Dashboard extends Component {
 
@@ -47,9 +41,6 @@ class Dashboard extends Component {
         let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         return months[month];
     }
-
-    
-
 
     ISO_numeric_date = (date) => {
         return (date.getDay() === 0 ? 7 : date.getDay()); 

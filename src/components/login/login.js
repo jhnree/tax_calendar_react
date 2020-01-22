@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 import auth from '../auth';
 
@@ -49,51 +50,31 @@ class Login extends Component {
 
     Login = (event) => {
         event.preventDefault()
-        const link = 'api/hash/439'
-        fetch(link, {
-            method: 'get',
-            headers: {
-                'Content-Type':'application/json',
-                'Accept':'application/json'
-                },
-        }).then(response => response.json()
-        ).then(json => {
-            console.log(json)
-        }).catch(console.log())
-        // const ApiLink = 'api/login'
-        // fetch(ApiLink, {
-        //     method:'POST',
-        //     headers: {
-        //         'Content-Type':'application/json',
-        //         'Accept':'application/json'
-        //         },
-        //     body:JSON.stringify({
-        //         email:this.state.email,
-        //         password:this.state.password,
-        //     })
-        // })
-        // .then(response => response.json())
-        // .then(json => {
-        //         if(json === 0){
-        //             toastError('All fields are required!')
-        //         }
-        //         else if(json === 1){
-        //             toastError("User doesn't exist!")
-        //         }
-        //         else if(json === 2){
-        //             toastError("Incorrect password!")
-        //         }
-        //         else{
-        //             toastSuccess("Successfully Login")
-
-        //             auth.Login(() => {
-        //                 localStorage.setItem("id", json.id)
-        //                 this.props.history.push('/dashboard'); 
-        //             })
-        //         }
-        //     }
-        // )
-        // .catch(console.log())
+       
+        axios.post('/api/login', { email: this.state.email, password:this.state.password })
+        .then( val => {
+            switch(val.data){
+                case 0:
+                    toastError('All fields are required.')
+                    break;
+                case 1:
+                    toastError("User doesn't exist.")
+                    break;
+                case 2:
+                    toastError("Incorrect password.")
+                    break;
+                default:
+                    axios.get(`/api/hash/${val.data.id}`)
+                    .then( res => { 
+                        auth.Login( () => {
+                            localStorage.setItem('id', res.data)
+                            this.props.history.push('/dashboard')
+                        } )
+                    })
+                    .catch(console.log())
+            }
+        })
+        .catch(console.log())
     }
 
     InputChange = (event) => {

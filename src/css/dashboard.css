@@ -1,4 +1,12 @@
 
+::-webkit-scrollbar{
+    width: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: whitesmoke;
+}
+
 .bg-standard{
     background: #01a8dc!important;
 }
@@ -247,4 +255,37 @@ td{
 
 span {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;
+}
+
+
+.notification-content button {
+    height: auto;
+}
+
+.notification-content button:hover {
+    background: #e2e2e2!important;
+}
+
+.notification-content button:focus  {
+    background: #e2e2e2!important;
+    color: #000!important;
+    outline: none!important;
+    box-shadow: none!important;
+}
+
+#notificationDropdown {
+    min-height: 100px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notification-title {
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.notification-content button .time, 
+.notification-content button time {
+    font-size: .7rem;
+    font-weight: 100;
 }

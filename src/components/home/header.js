@@ -1,55 +1,34 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import auth from '../auth';
-
+import axios from 'axios';
+import TimeAgo from 'timeago-react';
 
 class Header extends Component {
 
     constructor(props){
         super(props)
-
         this.state = {
-            id:localStorage.getItem("id"),
+            hashedID:localStorage.getItem("id"),
             userName:'',
             user:[],
             notification:[],
         }
-        
     }
 
     componentDidMount(){
-        const UserAccountLink = `api/user/${this.state.id}`
-        fetch(UserAccountLink,
-                {
-                    method:'get', 
-                    headers: {
-                        'Content-Type':'application/json',
-                        'Accept':'application/json'
-                        },
-                })
-        .then(response => response.json())
-        .then(json => {
-            this.setState({ userName:json['username'], user:json })
-        })
-        .catch(console.log)
-        this.userEventNotification();
+        axios.post('/api/all-user', { hashed: this.state.hashedID })
+        .then( val => {
+            this.setState({ userName: val.data.username, user: val.data, id: val.data.id })
+            this.setNotification(val.data.id)
+        } )
     }
 
-    userEventNotification(){
-        const eventNotificationAPI = `api/user-event-notification/${this.state.id}`
-        fetch(eventNotificationAPI,
-            {
-                method:'get', 
-                headers: {
-                    'Content-Type':'application/json',
-                    'Accept':'application/json'
-                    },
-            })
-        .then(response => response.json())
-        .then(json => {
-            this.setState({ notification:json })
-        })
-        .catch(console.log)
+    setNotification(id){
+        axios.get(`/api/user-event-notification/${id}`)
+        .then( val => {
+            this.setState({ notification: val.data })
+        } )
     }
     
     componentWillUnmount(){
@@ -59,11 +38,28 @@ class Header extends Component {
     Notification = () => {
         var notification = this.state.notification;
         var jsx = [];
-        notification.forEach(( val, index ) => {
-            jsx.push(<button className="btn form-control btn-success dropdown-item py-0" key={index}><span>{val.event_title}</span></button>)
-        })
-        console.log(notification);
+        if(notification){
+            notification.forEach(( val, index ) => {
+                jsx.push(<div className="notification-content" key={index}>
+                            <button className="btn form-control btn-success dropdown-item py-2" data-value={val.id}>
+                                <span className="notification-title m-0 p-0">{val.event_title}</span><br/>
+                                <span>{this.cutLongText(val.event_description)}</span>
+                                <span className="time pl-2">(<TimeAgo datetime={val.updated_at} />)</span>
+                            </button>
+                            <hr className="m-1"/>
+                        </div>)
+            })
+        }
         return jsx;
+    }
+
+    cutLongText = (text) => {
+        if(text.length > 25){
+
+            return text.substring(0,27) + '...';
+
+        }
+        return text;
     }
 
     NotificationCount = () => {
