@@ -37,8 +37,6 @@ const imgWidth = {
 
 
 class Login extends Component {
-<<<<<<< HEAD
-=======
 
     constructor(props){
         super(props)
@@ -59,7 +57,7 @@ class Login extends Component {
                 'Accept':'application/json'
                 },
         }).then(response => response.json()
-        ).then((json) => {
+        ).then(json => {
             console.log(json)
         }).catch(console.log())
         // const ApiLink = 'api/login'
@@ -112,7 +110,6 @@ class Login extends Component {
         }
     }
 
->>>>>>> b09d873332332c24c991e02519e2610ab1679f97
     render() {
         return (
             <div className="container-fluid">
@@ -121,11 +118,7 @@ class Login extends Component {
                         <div className="card shadow-lg">
                             <div className="card-header text-center pb-5 pt-4" style={cardHeader}>
                                 <div style={cardHeaderContent}>
-<<<<<<< HEAD
-                                    <img src={require('../../img/taxcalendar1.png')} alt="" className="mx-auto d-block" style={imgWidth}/>
-=======
                                     <img alt="" src={require('../../img/taxcalendar1.png')} className="mx-auto d-block" style={imgWidth}/>
->>>>>>> b09d873332332c24c991e02519e2610ab1679f97
                                 </div>
                             </div>
                             <div className="card-body mr-3">
@@ -134,23 +127,13 @@ class Login extends Component {
                                         <div className="input-group-append">
                                             <span className="input-group-text py-0 m-0 input-icon"><i className="admin-username-avatar"></i></span>
                                         </div>
-<<<<<<< HEAD
-                                        <input className="form-control font" name="email" type="text" placeholder="Email or Username"/>
-                                        
-=======
                                         <input className="form-control font" name="email" type="text" placeholder="Email or Username" value={this.state.email} onChange={this.InputChange}/>
->>>>>>> b09d873332332c24c991e02519e2610ab1679f97
                                     </div>
                                     <div className="input-group mt-3">
                                         <div className="input-group-append">
                                             <span className="input-group-text py-0 m-0 input-icon"><i className="admin-password-avatar"></i></span>
                                         </div>
-<<<<<<< HEAD
-                                        <input className="form-control font" name="password" type="password" placeholder="Password" />
-                                       
-=======
                                         <input className="form-control font" name="password" type="password" placeholder="Password" value={this.state.password} onChange={this.InputChange}/>
->>>>>>> b09d873332332c24c991e02519e2610ab1679f97
                                     </div>
                                     <div id="login-btn" className="mt-4 pl-3">
                                         <button type="submit" className="btn form-control rounded-0">LOGIN</button>

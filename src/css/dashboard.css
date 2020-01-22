@@ -183,7 +183,6 @@ td{
     /* color: wheat!important; */
 }
 
-<<<<<<< HEAD
 #test{
     height: 100%;
 }
@@ -200,8 +199,8 @@ td{
     color: white;
     font-size: 11px;
     text-align: center;
+}
 
-=======
 .today {
     border-radius: 75px;
     background: #01a8dc!important;
@@ -248,5 +247,4 @@ td{
 
 span {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif!important;
->>>>>>> b09d873332332c24c991e02519e2610ab1679f97
 }
