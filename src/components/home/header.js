@@ -45,11 +45,11 @@ class Header extends Component {
                     'Accept':'application/json'
                     },
             })
-    .then(response => response.json())
-    .then(json => {
-        this.setState({ notification:json })
-    })
-    .catch(console.log)
+        .then(response => response.json())
+        .then(json => {
+            this.setState({ notification:json })
+        })
+        .catch(console.log)
     }
     
     componentWillUnmount(){
@@ -65,6 +65,11 @@ class Header extends Component {
         console.log(notification);
         return jsx;
     }
+
+    NotificationCount = () => {
+        var notification = this.state.notification;
+        return <span className="badge rounded-circle" id="notificationCount">{notification.length}</span>
+    }
     
     render() {
         return (
@@ -78,7 +83,7 @@ class Header extends Component {
                         <li className="nav-item dropdown" id="notif">
                             <button className="btn nav-link bell" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" to="/">
                                 <i className="far fa-bell"></i>
-                                <span className="badge rounded-circle" id="notificationCount"></span>
+                                <this.NotificationCount/>
                             </button>
                             <div id="notificationDropdown" className="pt-0 dropdown-menu dropdown-menu-right" aria-labelledby="notification" style={{width: "300px"}}>
                                 <div className="bg-white pt-2 sticky-top"><p className="dropdown-header">Notifications</p><hr className="m-0 mb-2"/></div>

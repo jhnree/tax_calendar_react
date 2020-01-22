@@ -49,39 +49,51 @@ class Login extends Component {
 
     Login = (event) => {
         event.preventDefault()
-        const ApiLink = 'api/login'
-        fetch(ApiLink, {
-            method:'POST',
+        const link = 'api/hash/439'
+        fetch(link, {
+            method: 'get',
             headers: {
                 'Content-Type':'application/json',
                 'Accept':'application/json'
                 },
-            body:JSON.stringify({
-                email:this.state.email,
-                password:this.state.password,
-            })
-        })
-        .then(response => response.json())
-        .then(json => {
-                if(json === 0){
-                    toastError('All fields are required!')
-                }
-                else if(json === 1){
-                    toastError("User doesn't exist!")
-                }
-                else if(json === 2){
-                    toastError("Incorrect password!")
-                }
-                else{
-                    toastSuccess("Successfully Login")
-                    auth.Login(() => {
-                        localStorage.setItem("id", json.id)
-                        this.props.history.push('/dashboard'); 
-                    })
-                }
-            }
-        )
-        .catch(console.log())
+        }).then(response => response.json()
+        ).then((json) => {
+            console.log(json)
+        }).catch(console.log())
+        // const ApiLink = 'api/login'
+        // fetch(ApiLink, {
+        //     method:'POST',
+        //     headers: {
+        //         'Content-Type':'application/json',
+        //         'Accept':'application/json'
+        //         },
+        //     body:JSON.stringify({
+        //         email:this.state.email,
+        //         password:this.state.password,
+        //     })
+        // })
+        // .then(response => response.json())
+        // .then(json => {
+        //         if(json === 0){
+        //             toastError('All fields are required!')
+        //         }
+        //         else if(json === 1){
+        //             toastError("User doesn't exist!")
+        //         }
+        //         else if(json === 2){
+        //             toastError("Incorrect password!")
+        //         }
+        //         else{
+        //             toastSuccess("Successfully Login")
+
+        //             auth.Login(() => {
+        //                 localStorage.setItem("id", json.id)
+        //                 this.props.history.push('/dashboard'); 
+        //             })
+        //         }
+        //     }
+        // )
+        // .catch(console.log())
     }
 
     InputChange = (event) => {
