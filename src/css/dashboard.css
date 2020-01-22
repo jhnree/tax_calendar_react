@@ -6,7 +6,8 @@
 .link {
     color: white!important;
     text-decoration: none!important;
-    font-size: 1.3rem!important;
+    font-size: 18px !important;
+    font-family: Nunito, sans-serif; 
 }
 
 .bell{
@@ -86,7 +87,6 @@
 td{
     position: relative;
 }
-
 
 .current{
     color: #006c8e;
@@ -175,8 +175,31 @@ td{
     /* color: violet; */
 }
 
+.rowsssss:hover{
+    background: #cce6ff;
+}
+
 .calendar-title a i{
     font-size: 1.4rem!important;
     /* font-weight: 400; */
     /* color: wheat!important; */
+}
+
+#test{
+    height: 100%;
+}
+#sidebar-item{
+    margin-top: 70px;
+    font-family: "Helvetica-Neue", Helvetica, Arial, sans-serif;
+}
+
+.event_name{
+    background: linear-gradient(to left, #0F4C75 , #3282B8);
+    padding: 2px;
+    margin: 2px;
+    border-radius: 28px;
+    color: white;
+    font-size: 11px;
+    text-align: center;
+
 }

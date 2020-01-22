@@ -7,12 +7,12 @@ import '../../css/login.css';
 
 
 toast.configure({
-    position: "top-right",
-    autoClose: 3000,
+    position: "top-left",
+    autoClose: 15000,
     hideProgressBar: false,
     closeOnClick: true,
-    pauseOnHover: false,
-    draggable: true,
+    pauseOnHover: true,
+    draggable: false,
 });
 
 const notify = () => toast.success("Wow so easy !");
@@ -34,8 +34,6 @@ const imgWidth = {
 
 
 class Login extends Component {
-
-
     render() {
         return (
             <div className="container-fluid">
@@ -44,7 +42,7 @@ class Login extends Component {
                         <div className="card shadow-lg">
                             <div className="card-header text-center pb-5 pt-4" style={cardHeader}>
                                 <div style={cardHeaderContent}>
-                                    <img src={require('../../img/taxcalendar1.png')} className="mx-auto d-block" style={imgWidth}/>
+                                    <img src={require('../../img/taxcalendar1.png')} alt="" className="mx-auto d-block" style={imgWidth}/>
                                 </div>
                             </div>
                             <div className="card-body mr-3">
@@ -54,12 +52,14 @@ class Login extends Component {
                                             <span className="input-group-text py-0 m-0 input-icon"><i className="admin-username-avatar"></i></span>
                                         </div>
                                         <input className="form-control font" name="email" type="text" placeholder="Email or Username"/>
+                                        
                                     </div>
                                     <div className="input-group mt-3">
                                         <div className="input-group-append">
                                             <span className="input-group-text py-0 m-0 input-icon"><i className="admin-password-avatar" onClick={notify}></i></span>
                                         </div>
-                                        <input className="form-control font" name="password" type="password" placeholder="Password"/>
+                                        <input className="form-control font" name="password" type="password" placeholder="Password" />
+                                       
                                     </div>
                                     <div id="login-btn" className="mt-4 pl-3">
                                         <button className="btn form-control rounded-0">LOGIN</button>

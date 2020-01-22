@@ -1,0 +1,65 @@
+html, body{
+    background: #f2f2f2;
+}
+.forMalePercentage, .forFemalePercentage{
+    height: 40px;
+}
+
+.forMaleInnerValue{
+    height: 40px;
+    background: #0F4C75;
+    border-radius: 8px;
+    
+}
+/* .forFemaleInnerValue{
+    height: 40px;
+    background: #3282B8;
+    border-radius: 0 0 0 8px;
+    
+} */
+
+.forMaleInnerValue{
+    padding-top: 6px;
+    font-size: 10px;
+    border-radius: 8px 0 0 8px ;
+    height: 30px;
+}
+
+.forMaleInnerValue100{
+    padding-top: 6px;
+    font-size: 10px;
+    border-radius: 8px ;
+    background: #0F4C75;
+    
+    height: 30px;
+}
+
+.forFemaleInnerValue{
+    padding-top: 6px;
+    font-size: 10px;
+    border-radius: 0 8px 8px 0 ;
+    background: #ff8080;
+    height: 30px;
+}
+
+.forFemaleInnerValue100{
+    padding-top: 6px;
+    font-size: 10px;
+    border-radius: 8px!important ;
+    background: #ff8080;
+    height: 30px;
+}
+#userIcons{
+    height: 100px;
+    margin-top: -70px;
+}
+.card{
+    padding: 20px;
+}
+#smallIcons{
+    height: 40px;
+}
+#formIcon{
+    height: 20px;
+    width: 20px;
+}

@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 import '../../css/dashboard.css'
 
 import Header from './header'
+
+// function testAlert() {
+//     alert('this is a test alert');
+// }
 
 class Dashboard extends Component {
 
@@ -14,7 +18,7 @@ class Dashboard extends Component {
             currentMonth:'',
             currentYear:'',
             dateToday:'',
-            date:''
+            date:'',
         }
     }
 
@@ -29,9 +33,11 @@ class Dashboard extends Component {
 
     ConvertMonth = (month) => {
         let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-
         return months[month];
     }
+
+    
+
 
     ISO_numeric_date = (date) => {
         return (date.getDay() === 0 ? 7 : date.getDay()); 
@@ -52,7 +58,7 @@ class Dashboard extends Component {
         var lastDay;
         var currentYear = this.state.currentYear;
 
-        if(currentYear != ''){
+        if(currentYear !== ''){
             month = this.state.currentMonth;
             year = this.state.currentYear
         }
@@ -62,15 +68,15 @@ class Dashboard extends Component {
         var firstRow = [];
         var followingRow = [];
 
-        if(week1 == 7){
+        if(week1 === 7){
             week1 = 0;
         }
         for(var i = 0; i < 7; i++){
             if(week1 > i){
-                firstRow.push(<td key={i}></td>);
+                firstRow.push(<td className="rowsssss" key={i}></td>);
             }
             else{
-                firstRow.push(<td key={i}>{day}</td>);
+                firstRow.push(<td className="rowsssss" key={i}>{day}</td>);
                 day++;
             }
         }
@@ -78,9 +84,9 @@ class Dashboard extends Component {
         for(var x = 0; x <= 4; x++){
             var col = [];
             for(var d = 1; d <= 7; d++){
-                if(day!=lastDay.getDate()){
+                if(day!==lastDay.getDate()){
                     day++;
-                    col.push(<td key={d}>{day}</td>)
+                    col.push(<td className="rowsssss" key={d}>{day}</td>)
                 }
                 else{
                     col.push(<td key={d}></td>)
@@ -102,7 +108,7 @@ class Dashboard extends Component {
     GotoPrevMonth = () => {
         var currMonth = this.state.currentMonth;
         var currYear = this.state.currentYear;
-        if(currMonth == 0){
+        if(currMonth === 0){
             this.setState({
                 currentMonth:11,
                 currentYear:currYear-1,
@@ -118,7 +124,7 @@ class Dashboard extends Component {
     GotoNextMonth = () => {
         var currMonth = this.state.currentMonth;
         var currYear = this.state.currentYear;
-        if(currMonth == 11){
+        if(currMonth === 11){
             this.setState({
                 currentMonth:0,
                 currentYear:currYear+1,

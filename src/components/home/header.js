@@ -19,7 +19,7 @@ class Header extends Component {
                             <div id="notificationDropdown" className="pt-0 dropdown-menu dropdown-menu-right" aria-labelledby="notification" style={{width: "300px"}}>
                                 
                             </div>
-                        </li>
+                        </li> 
                         <li className="nav-item dropdown">
                             <a className="nav-link" href="#" id="profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="profile-icon"></i></a>
                             <div id="profile-menu" className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownId">
