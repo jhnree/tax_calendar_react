@@ -89,7 +89,7 @@ class Header extends Component {
                                 <div className="bg-white pt-2 sticky-top"><p className="dropdown-header">Notifications</p><hr className="m-0 mb-2"/></div>
                                 <this.Notification/>
                             </div>
-                        </li>
+                        </li> 
                         <li className="nav-item dropdown">
                             <button className="btn nav-link" id="profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="profile-icon"></i></button>
                             <div id="profile-menu" className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownId">
