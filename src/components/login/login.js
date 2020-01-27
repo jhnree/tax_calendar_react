@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import auth from '../auth';
+// import auth from '../auth';
 
 import '../../css/login.css';
 
@@ -16,9 +16,6 @@ toast.configure({
     pauseOnHover: true,
     draggable: false,
 });
-
-const toastError = (message) => toast.error(message);
-const toastSuccess = (message) => toast.success(message);
 
 const cardHeader = {
     background: '#01a8dc',

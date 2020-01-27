@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom'
+import {BrowserRouter , Route } from 'react-router-dom';
 
-import {ProtectedRoute} from './protected.route';
 import Login from './login/login';
 import Dashboard from './home/home';
 import Admin from './admin/admin';
