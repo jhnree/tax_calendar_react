@@ -19,7 +19,7 @@ toast.configure({
 });
 
 const toastError = (message) => toast.error(message);
-const toastSuccess = (message) => toast.success(message);
+// const toastSuccess = (message) => toast.success(message);
 
 const cardHeader = {
     background: '#01a8dc',
@@ -95,7 +95,7 @@ class Login extends Component {
         return (
             <div className="container-fluid">
                 <div className="row mt-5">
-                    <div className="col-lg-4 col-12 mx-auto">
+                    <div className="col-lg-4 col-md-8 col-sm-10 col-12 mx-auto">
                         <div className="card shadow-lg">
                             <div className="card-header text-center pb-5 pt-4" style={cardHeader}>
                                 <div style={cardHeaderContent}>

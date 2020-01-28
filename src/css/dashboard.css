@@ -79,17 +79,7 @@
     font-weight: 900;
     margin-bottom: 4px;
 }
-/* .event:hover{
-    color: white!important;
-    background: #017b9e;
-    transition: .2s;
-    cursor: pointer;
-}
-.event:focus{
-    box-shadow: none;
-    background: #01a8dc!important;
-    color: white;
-} */
+
 td{
     position: relative;
 }
@@ -136,7 +126,6 @@ td{
 .title{
     color: #333;
     font-size: 1.3rem;
-    /* font-weight: 600; */
     letter-spacing: 2px;
 }
 
@@ -151,10 +140,6 @@ td{
 
 .time-scheduled p{
     font-size: .8rem!important;
-}
-
-.modal-content{
-    /* background: linear-gradient(120deg, #006c8e, #01a8dc, #006c8e); */
 }
 
 .modal-body table{
@@ -177,8 +162,6 @@ td{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     font-size: 1.8rem!important;
     font-weight: 500;
-    /* margin-top: 10px!important; */
-    /* color: violet; */
 }
 
 .rowsssss:hover{
@@ -187,8 +170,6 @@ td{
 
 .calendar-title a i{
     font-size: 1.4rem!important;
-    /* font-weight: 400; */
-    /* color: wheat!important; */
 }
 
 #test{
@@ -228,17 +209,7 @@ td{
     font-weight: 700;
     margin-bottom: 4px;
 }
-/* .event:hover{
-    color: white!important;
-    background: #017b9e;
-    transition: .2s;
-    cursor: pointer;
-} */
-/* .event:focus{
-    box-shadow: none;
-    background: #01a8dc!important;
-    color: white;
-} */
+
 td{
     position: relative;
 }
