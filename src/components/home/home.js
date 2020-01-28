@@ -350,7 +350,7 @@ class Dashboard extends Component {
                         </div>
                         <div className="card">
                             <div className="card-body p-0 m-0">
-                                <div className="table-responsive">
+                                <div className="table-responsive-lg">
                                     <table className="table table-bordered table-standard mb-0" style={{height: '480px'}}>
                                         <thead>
                                             <tr>

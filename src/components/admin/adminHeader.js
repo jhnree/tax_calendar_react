@@ -23,18 +23,18 @@ class adminHeader extends Component{
                                     <i className="far fa-bell"></i>
                                     <span className="badge rounded-circle" id="notificationCount"></span>
                                 </Link> */}
-                                <a className="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img src={NotifBell} alt="" className="notifBell" /></a>
+                                <a href="/"className="nav-link" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <img src={NotifBell} alt="" className="notifBell" /></a>
                                    
                                 <div id="notificationDropdown" className="pt-0 dropdown-menu dropdown-menu-right" aria-labelledby="notification" style={{ width: "300px" }}>
-                                    <div className="dropdown-item mt-2 notifBell"><img className="red-dot" src={RedDot} alt="" /><a href="#" className="dropdown-item-list">Test Notification</a></div>
+                                    <div className="dropdown-item mt-2 notifBell"><img className="red-dot" src={RedDot} alt="" /><a href="/" className="dropdown-item-list">Test Notification</a></div>
                                 </div>
                             </li>
                             <li className="nav-item dropdown">
-                                <a className="nav-link" href="#" id="profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="profile-icon"></i></a>
+                                <a className="nav-link" href="/" id="profile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i className="profile-icon"></i></a>
                                 <div id="profile-menu" className="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownId">
                                     <Link to="/Admin/Dashboard" className="dropdown-item">Profile</Link>
                                     <hr className="my-1" />
-                                    <Link to="/Admin/Dashboard" className="dropdown-item" to="/logout"><i className="log-out-icon"></i><span className="pl-2">Logout</span></Link>
+                                    <Link to="/Admin/Dashboard" className="dropdown-item"><i className="log-out-icon"></i><span className="pl-2">Logout</span></Link>
                                 </div>
                             </li>
                         </ul>

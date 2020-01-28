@@ -1,26 +1,34 @@
 import React, { Component } from 'react'
-
 import '../../css/dashboard.css'
+import axios from 'axios';
+
+// components
 import AdminHeader from './adminHeader'
 import AdminSidebar from './AdminSidebar'
+
+// images
 import Back from '../../img/back.png'
 import Next from '../../img/next.png'
-import InsertEventModal from './insertEventModal'
-
-// const SubmitEvent = 'http://127.0.0.1:8000/api/insertEvent';
 
 
 class Admin extends Component{
     constructor(props) {
         super(props);
-
         this.state = {
             currentMonth: '',
             currentYear: '',
             dateToday: '',
             date: '',
-            eventName: 'test event namessss'
+            eventDate: '',
+            eventTitle: '',
+            eventDescription: '',
+            eventRemarks: ''
         }
+        this.handleChangeFirst = this.handleChangeFirst.bind(this);
+        this.handleChangeSecond = this.handleChangeSecond.bind(this);
+        this.handleChangeThird = this.handleChangeThird.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleEventDate = this.handleEventDate.bind(this);   
     }
 
     componentDidMount() {
@@ -30,6 +38,30 @@ class Admin extends Component{
             currentYear: date.getFullYear(),
             dateToday: this.ConvertMonth(date.getMonth()) + ' ' + date.getDate() + ', ' + date.getFullYear(),
         })
+    }
+
+    handleChangeFirst = (e) => {
+        this.setState({
+            eventTitle: e.target.value
+        });
+    }
+
+    handleChangeSecond = (e) => {
+        this.setState({
+            eventDescription: e.target.value
+        });
+    }
+
+    handleChangeThird = (e) => {
+        this.setState({
+            eventRemarks: e.target.value
+        });
+    }
+
+    handleEventDate = (e) => {
+        this.setState({
+            eventDate: sessionStorage.getItem('date_now')
+        });
     }
 
     ConvertMonth = (month) => {
@@ -47,21 +79,53 @@ class Admin extends Component{
         return newDate;
     }
 
-    CurrentMonth = (event) => {
-        //
-    }
-
-    CurrentDay = (event) => {
-        //
-    }
     // getting the specific date of each td
     TestAlert = (event) => {
-        alert(event.target.dataset.value + ' ' + this.state.eventName);
+        sessionStorage.setItem('date_now', event.target.dataset.value);
+        this.setState({
+            eventDate: sessionStorage.getItem('date_now')
+        });
     }
 
-    InsertModal = () => {
+    // submit data
 
+    handleSubmit(e) {
+        e.preventDefault();
+
+        const event_title = this.state.eventTitle;
+
+        const event_description = this.state.eventDescription;
+
+        const event_remarks = this.state.eventRemarks;
+
+        const event_date = this.state.eventDate;
+
+        console.log(event_date);
+
+        const insertEventDate = '/api/insert-event-date';
+
+        axios.post(insertEventDate, {
+            // submit all inputs 
+            eventDate: event_date,
+            eventTitle: event_title,
+            eventDescription: event_description,
+            eventRemarks: event_remarks,
+        })
+        .then(response => {
+            // clear inputs
+            this.setState({
+                eventDate: '',
+                eventTitle: '',
+                eventDescription: '',
+                eventRemarks: ''
+            });
+            // redirect after submit
+            window.location = "/Admin/Dashboard";
+        });
+
+         
     }
+
 
     StandardizedMonth = (month) => {
         var newMonth = month + 1;
@@ -77,8 +141,6 @@ class Admin extends Component{
         }
         return day;
     }
-
-
 
     TableBody = () => {
         let day = 1;
@@ -104,10 +166,10 @@ class Admin extends Component{
         }
         for (var i = 0; i < 7; i++) {
             if (week1 > i) {
-                firstRow.push(<td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={this.StandardizedMonth(month) + '-' + this.StandardizedDay(day) + '-' + year + this.state.eventName} key={i} ></td>);
+                firstRow.push(<td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={ year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day) + this.state.eventName} key={i} ></td>);
             }
             else {
-                firstRow.push(<td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={this.StandardizedMonth(month) + '-' + this.StandardizedDay(day) + '-' + year} key={i}>{day} <div className="event_name">event name</div></td>);
+                firstRow.push(<td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={ year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day)} key={i}>{day} <div className="event_name avoid-clicks">event name</div></td>);
                 day++;
             }
         }
@@ -117,7 +179,7 @@ class Admin extends Component{
             for (var d = 1; d <= 7; d++) {
                 if (day !== lastDay.getDate()) {
                     day++;
-                    col.push(<td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={this.StandardizedMonth(month) + '-' + this.StandardizedDay(day) + '-' + year} key={d}>{day} <div className="event_name">event name</div></td>)
+                    col.push(<td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={ year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day)} key={d}>{day} <div className="event_name avoid-clicks">event name</div></td>)
                 }
                 else {
                     col.push(<td key={d}></td>)
@@ -179,7 +241,40 @@ class Admin extends Component{
                             <div className="text-center mt-5 mb-3">
                                 <div className="calendar-title">
                                     <div className="row">
-                                        <InsertEventModal id="exampleModalLong"/>
+                                        
+
+                                        <div className="modal fade" id="exampleModalLong" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                            <div className="modal-dialog" role="document">
+                                                <div className="modal-content">
+                                                    <div className="modal-header" style={{ background: "linear-gradient(to left, #0F4C75 , #3282B8)", color: 'white' }}>
+                                                        <h5 className="modal-title  text-center" id="exampleModalLongTitle">Add Event</h5>
+                                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div className="modal-body">
+                                                        <form>
+                                                            <div className="form-group">
+                                                                <input className="form-control" value={this.state.eventTitle} name="event_title" onChange={this.handleChangeFirst} placeholder="Event Title" />
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <input className="form-control" value={this.state.eventDescription} name="event_description" onChange={this.handleChangeSecond} placeholder="Event Description" />
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <input className="form-control" value={this.state.eventDate} name="event_date" onChange={this.handleEventDate}/>
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <input className="form-control" value={this.state.eventRemarks} name="event_remarks" onChange={this.handleChangeThird} placeholder="Event Remarks" />
+                                                            </div>
+                                                            <button type="submit" className="btn btn-primary" onClick={this.handleSubmit}>Submit</button>
+                                                        </form>
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <div className="col-3">
                                             <button onClick={this.GotoPrevMonth} className="btn text-dark pr-2" to="/"><img id="sidebarIcon" src={Back} alt=""/></button>
                                         </div>
