@@ -90,7 +90,8 @@ class Admin extends Component{
     // submit data
 
     handleSubmit(e) {
-    
+        e.preventDefault();
+
         const event_title = this.state.eventTitle;
 
         const event_description = this.state.eventDescription;
@@ -118,12 +119,11 @@ class Admin extends Component{
                 eventDescription: '',
                 eventRemarks: ''
             });
-            // // redirect after submit
-            // window.location = "/Admin/Dashboard";
+            // redirect after submit
+            window.location = "/Admin/Dashboard";
         });
 
-         e.preventDefault();
-
+         
     }
 
 
