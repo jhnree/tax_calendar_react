@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import '../../css/dashboard.css';
 import Header from './header';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 class Dashboard extends Component {
 
@@ -337,13 +339,13 @@ class Dashboard extends Component {
                             <div className="calendar-title">
                                 <div className="row">
                                     <div className="col-1">
-                                        <button onClick={this.GotoPrevMonth} className="btn"><i className="fas fa-chevron-left"/></button>
+                                        <button onClick={this.GotoPrevMonth} className="btn"><FontAwesomeIcon icon={faChevronLeft}/></button>
                                     </div>
                                     <div className="col-10">
                                         <span className="displayedMonth">{this.ConvertMonth(this.state.currentMonth)} {this.state.currentYear}</span>
                                     </div>
                                     <div className="col-1">
-                                        <button onClick={this.GotoNextMonth} className="btn"><i className="fas fa-chevron-right"/></button>
+                                        <button onClick={this.GotoNextMonth} className="btn"><FontAwesomeIcon icon={faChevronRight}/></button>
                                     </div>
                                 </div>
                             </div>

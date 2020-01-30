@@ -10,8 +10,8 @@ import '../../css/login.css';
 
 
 toast.configure({
-    position: "top-left",
-    autoClose: 15000,
+    position: "top-right",
+    autoClose: 1500,
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
@@ -67,7 +67,9 @@ class Login extends Component {
                     axios.get(`/api/hash/${val.data.id}`)
                     .then( res => { 
                         auth.Login( () => {
+                            this.upcomingDeadline()
                             localStorage.setItem('id', res.data)
+                            localStorage.setItem('show', true)
                             this.props.history.push('/dashboard')
                         } )
                     })
@@ -75,6 +77,30 @@ class Login extends Component {
             }
         })
         .catch(console.log())
+    }
+
+    upcomingDeadline = () => {
+        axios.get('/api/upcoming-deadline')
+        .then( result => {
+            var data = result.data
+            for(var i = 0; i < data.length; i++){
+                if(data[i].length > 0){
+                    switch(i){
+                        case 0:
+                            sessionStorage.setItem(i, JSON.stringify(data[i]))
+                            break;
+                        case 1:
+                            sessionStorage.setItem(i, JSON.stringify(data[i]))
+                            break;
+                        case 2:
+                            sessionStorage.setItem(i, JSON.stringify(data[i]))
+                            break;
+                        default: return false;
+                    }
+                    localStorage.setItem('test', '1');
+                }
+            }
+        })
     }
 
     InputChange = (event) => {

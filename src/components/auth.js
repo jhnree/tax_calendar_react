@@ -1,13 +1,12 @@
 class Auth {
     Login(cb) {
-        // this.authenticated = true
         localStorage.setItem("token", "qwrzkituUzxcgpasdjqwrnOasdmr5iAMS")
         cb()
     }
 
     Logout(cb) {
-        // this.authenticated = false
-        localStorage.removeItem("token")
+        localStorage.clear()
+        sessionStorage.clear()
         cb()
     }
 

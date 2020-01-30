@@ -1,16 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { Link } from 'react-router-dom';
 import auth from '../auth';
 import axios from 'axios';
 import TimeAgo from 'timeago-react';
-import NotificationModal from './notificationModal';
+import { Button, Modal, Badge, Table } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
+import '../../css/header.css';
 
 class Header extends Component {
 
     constructor(props){
         super(props)
+        var userId = localStorage.getItem("id")
         this.state = {
-            hashedID:localStorage.getItem("id"),
+            hashedID:userId,
             userName:'',
             id:'',
             user:[],
@@ -19,13 +23,15 @@ class Header extends Component {
             eventDescription:'',
             eventDate:'',
             eventRemarks:'',
+            upcomingDeadline:'',
+            isShown:true,
         }
     }
 
     componentDidMount(){
         axios.post('/api/all-user', { hashed: this.state.hashedID })
         .then( val => {
-            this.setState({ userName: val.data.username, user: val.data, id: val.data.id })
+            this.setState({ userName: val.data.username, user: val.data, id: val.data.id})
             this.setNotification(val.data.id)
         } )
     }
@@ -40,6 +46,8 @@ class Header extends Component {
     componentWillUnmount(){
         localStorage.clear()
     }
+
+    
 
     Notification = () => {
         var notification = this.state.notification;
@@ -106,10 +114,67 @@ class Header extends Component {
         var notification = this.state.notification;
         return <span className="badge rounded-circle" id="notificationCount">{notification.length}</span>
     }
+
+    UpcomingDeadlineModal() {
+        const oneDay = JSON.parse(sessionStorage.getItem('0'));
+        const threeDays = JSON.parse(sessionStorage.getItem('1'));
+        const sevenDays = JSON.parse(sessionStorage.getItem('2'));
+        const [show, setShow] = useState(JSON.parse(localStorage.getItem('show')));
+        const handleClose = () => {
+            localStorage.setItem('show', false)
+            localStorage.setItem('test', '0')
+            setShow(false)
+        };
+        return (
+          <>
+            <Modal size="lg" show={show} onHide={handleClose}>
+                <Modal.Header closeButton>
+                    <Modal.Title className="text-center" style={{ width: '100%' }}>Upcoming Deadlines</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Table id="deadline" bordered responsive>
+                        <thead>
+                            <tr>
+                                <th colSpan="2">Event Title</th>
+                                <th className="text-center">Remaining Days</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {oneDay ? oneDay.map((value, key) => {
+                                return <tr key={value['id']}>
+                                        <td colSpan="2">{value['event_title']}</td>
+                                        <td className="text-center"><Badge style={{ width: '70px', height: '20px', paddingTop: '5px', fontSize: '.75rem' }} variant="danger">1 day</Badge></td>
+                                    </tr>
+                            }) : <> </>}
+                            {threeDays ? threeDays.map((value, key) => {
+                                return <tr key={value['id']}>
+                                        <td colSpan="2">{value['event_title']}</td>
+                                        <td className="text-center"><Badge style={{ width: '70px', height: '20px', paddingTop: '5px', fontSize: '.75rem' }} variant="warning">3 days</Badge></td>
+                                    </tr>
+                            }) : <></>}
+                            {sevenDays ? sevenDays.map((value, key) => {
+                                return <tr key={value['id']}>
+                                        <td colSpan="2">{value['event_title']}</td>
+                                        <td className="text-center"><Badge style={{ width: '70px', height: '20px', paddingTop: '5px', fontSize: '.75rem' }} variant="info">7 days</Badge></td>
+                                    </tr>
+                            }) : <></>}
+                        </tbody>
+                    </Table>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+          </>
+        );
+      }
     
     render() {
         return (
             <div>
+                {localStorage.getItem('test') === '1' ? <this.UpcomingDeadlineModal/> : <> </>}
                 <div className="modal fade" id="notificationModal" role="dialog" aria-modal="true" style={{paddingRight: '10px'}}>
                     <div className="modal-dialog modal-md">
                         <div className="modal-content">
@@ -124,7 +189,6 @@ class Header extends Component {
                                 <br/>
                                 <span id="descriptions">
                                     <p>{this.state.eventDescription}</p>
-                                    {/* <p></p> */}
                                 </span>
                                 <br/>
                                 <span id="remark">{this.state.eventRemarks}</span>
@@ -141,7 +205,8 @@ class Header extends Component {
                         <ul className="navbar-nav ml-auto">
                             <li className="nav-item dropdown" id="notif">
                                 <button className="btn nav-link bell" id="notification" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" to="/">
-                                    <i className="far fa-bell"></i>
+                                    {/* <i className="far fa-bell"></i> */}
+                                    <FontAwesomeIcon icon={faBell}></FontAwesomeIcon>
                                     <this.NotificationCount/>
                                 </button>
                                 <div id="notificationDropdown" className="pt-0 dropdown-menu dropdown-menu-right" aria-labelledby="notification" style={{width: "300px"}}>

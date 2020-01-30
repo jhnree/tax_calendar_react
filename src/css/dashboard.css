@@ -3,8 +3,12 @@
     width: 10px;
 }
 
-::-webkit-scrollbar-thumb {
-    background: whitesmoke;
+body::-webkit-scrollbar-thumb {
+    background: rgb(139, 139, 139);
+}
+
+div::-webkit-scrollbar-thumb {
+    background: rgb(238, 238, 238);
 }
 
 .bg-standard{
