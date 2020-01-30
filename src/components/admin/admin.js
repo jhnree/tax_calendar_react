@@ -19,16 +19,18 @@ class Admin extends Component{
             currentYear: '',
             dateToday: '',
             date: '',
+            eventsList: [],
             eventDate: '',
             eventTitle: '',
             eventDescription: '',
+            error: null,
             eventRemarks: ''
         }
         this.handleChangeFirst = this.handleChangeFirst.bind(this);
         this.handleChangeSecond = this.handleChangeSecond.bind(this);
         this.handleChangeThird = this.handleChangeThird.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleEventDate = this.handleEventDate.bind(this);   
+        this.handleEventDate = this.handleEventDate.bind(this);
     }
 
     componentDidMount() {
@@ -37,7 +39,10 @@ class Admin extends Component{
             currentMonth: date.getMonth(),
             currentYear: date.getFullYear(),
             dateToday: this.ConvertMonth(date.getMonth()) + ' ' + date.getDate() + ', ' + date.getFullYear(),
-        })
+        });
+        
+        this.fetchEventList();
+
     }
 
     handleChangeFirst = (e) => {
@@ -64,6 +69,21 @@ class Admin extends Component{
         });
     }
 
+    fetchEventList() {
+        var arr = [];
+        axios.get('/api/get-event-list')
+        .then(data => {
+            var newData = data.data;
+            // console.log(newData)
+            newData.forEach((value, key) => {
+                arr.push(<p key={key}>{value.event_deadline}</p>)
+            })
+            console.log(arr)
+            // return arr;
+        })
+        // return arr;
+    }
+
     ConvertMonth = (month) => {
         let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
         return months[month];
@@ -78,9 +98,9 @@ class Admin extends Component{
         var newDate = new Date(date.getFullYear(), date.getMonth(), day);
         return newDate;
     }
-
     // getting the specific date of each td
     TestAlert = (event) => {
+        // alert(event.target.dataset.value);
         sessionStorage.setItem('date_now', event.target.dataset.value);
         this.setState({
             eventDate: sessionStorage.getItem('date_now')
@@ -90,6 +110,7 @@ class Admin extends Component{
     // submit data
 
     handleSubmit(e) {
+
         e.preventDefault();
 
         const event_title = this.state.eventTitle;
@@ -99,8 +120,6 @@ class Admin extends Component{
         const event_remarks = this.state.eventRemarks;
 
         const event_date = this.state.eventDate;
-
-        console.log(event_date);
 
         const insertEventDate = '/api/insert-event-date';
 
@@ -122,10 +141,7 @@ class Admin extends Component{
             // redirect after submit
             window.location = "/Admin/Dashboard";
         });
-
-         
     }
-
 
     StandardizedMonth = (month) => {
         var newMonth = month + 1;
@@ -155,22 +171,29 @@ class Admin extends Component{
             month = this.state.currentMonth;
             year = this.state.currentYear
         }
+
         startDay = new Date(`${month + 1}-01-${year}`)
         lastDay = new Date(year, month + 1, 0)
         var week1 = this.ISO_numeric_date(startDay);
         var firstRow = [];
         var followingRow = [];
-
         if (week1 === 7) {
             week1 = 0;
         }
         for (var i = 0; i < 7; i++) {
             if (week1 > i) {
-                firstRow.push(<td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={ year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day) + this.state.eventName} key={i} ></td>);
+                firstRow.push(<td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={ year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day) + this.state.eventName} key={i}></td>);
             }
             else {
-                firstRow.push(<td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={ year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day)} key={i}>{day} <div className="event_name avoid-clicks">event name</div></td>);
+
+                firstRow.push(
+                    <td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day)} key={i}>{day}
+                        <div className="event_name avoid-clicks">
+                            {this.fetchEventList()}
+                        </div>
+                    </td>);
                 day++;
+
             }
         }
         day--;
@@ -179,7 +202,7 @@ class Admin extends Component{
             for (var d = 1; d <= 7; d++) {
                 if (day !== lastDay.getDate()) {
                     day++;
-                    col.push(<td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={ year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day)} key={d}>{day} <div className="event_name avoid-clicks">event name</div></td>)
+                    col.push(<td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={ year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day)} key={d}>{day} <div className="event_name avoid-clicks"></div></td>)
                 }
                 else {
                     col.push(<td key={d}></td>)
@@ -241,8 +264,6 @@ class Admin extends Component{
                             <div className="text-center mt-5 mb-3">
                                 <div className="calendar-title">
                                     <div className="row">
-                                        
-
                                         <div className="modal fade" id="exampleModalLong" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                                             <div className="modal-dialog" role="document">
                                                 <div className="modal-content">
@@ -310,7 +331,6 @@ class Admin extends Component{
                         </div>
                     </div>
                 </div>
-                
             </div>
         );
     }

@@ -116,7 +116,7 @@ class Dashboard extends Component {
                 arr.push(val);
             }
         })
-        return arr;
+            return arr;
     }
 
     sample = (i, event, day) => {
