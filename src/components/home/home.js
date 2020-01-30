@@ -1,12 +1,8 @@
 import React, { Component } from 'react';
-
-import '../../css/dashboard.css'
-
-import Header from './header'
-
-// function testAlert() {
-//     alert('this is a test alert');
-// }
+import '../../css/dashboard.css';
+import Header from './header';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 
 class Dashboard extends Component {
 
@@ -28,18 +24,18 @@ class Dashboard extends Component {
 
     componentDidMount(){
         let date = new Date();
+        // let concatDate = date.getFullYear() + '-' + this.standardizedMonth(date.getMonth()) + '-' + date.getDate()
+        // console.log(concatDate)
         this.setState({
             currentMonth:date.getMonth(),
             currentYear:date.getFullYear(),
             dateToday:this.ConvertMonth(date.getMonth()) + ' ' + date.getDate() + ', ' + date.getFullYear(),
             dayToday:this.ConvertDay(date.getDay()),
         })
-        
     }
 
     ConvertDay = (day) => {
         let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
         return days[day];
     }
 
@@ -47,9 +43,6 @@ class Dashboard extends Component {
         let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
         return months[month];
     }
-
-    
-
 
     ISO_numeric_date = (date) => {
         return (date.getDay() === 0 ? 7 : date.getDay()); 
@@ -62,6 +55,9 @@ class Dashboard extends Component {
     }
 
     EventList = (year, month, day) => {
+        let date = new Date();
+        let concatDate = date.getFullYear() + '-' + this.standardizedMonth(date.getMonth()) + '-' + date.getDate()
+        // console.log(concatDate)
         const ApiLink = 'api/dailyEvent'
         fetch(ApiLink, 
                 {
@@ -73,7 +69,17 @@ class Dashboard extends Component {
                 })
         .then(response => response.json())
         .then(json => {
-            this.setState({EventList:json})
+            let arr = []
+            json.forEach(( val, index ) => {
+                if(val.event_deadline === concatDate){
+                    arr.push(val)
+                }
+            })
+            this.setState({ 
+                eventToDisplay: arr.length ? arr : [],
+                EventList: json 
+            })
+            
         })
         .catch(console.log())
     }
@@ -93,18 +99,12 @@ class Dashboard extends Component {
 
     standardizedMonth = (month) => {
         var m = month.toString();
-        if(m.length === 1){
-            return '0' + (month + 1);
-        }
-        return month + 1;
+        return m.length === 1 ? '0' + (month + 1) : month + 1;
     }
 
     standardizedDay = (day) => {
         var d = day.toString();
-        if(d.length === 1){
-            return '0' + day;
-        }
-        return day;
+        return d.length === 1 ? '0' + day : day;
     }
 
     hasEvent = (year, month, day) => {
@@ -130,20 +130,20 @@ class Dashboard extends Component {
     }
 
     dayClick(event) {
-        var date = event.target.dataset.value
+        var eventDate = event.target.dataset.value
         var events = this.state.EventList
         var arr = []
+        var date = new Date(eventDate)
         events.forEach((val, index)=>{
-            if(val['event_deadline'] === date){
+            if(val['event_deadline'] === eventDate){
                 arr.push(val)
             }
         })
-        if(arr.length){
-            this.setState({ eventToDisplay:arr })
-        }
-        else{
-            this.setState({ eventToDisplay:[]})
-        }
+        this.setState({ 
+            eventToDisplay: arr.length ? arr : [],
+            dayToday: this.ConvertDay(date.getDay()),
+            dateToday: this.ConvertMonth(date.getMonth()) + ' ' + date.getDate() + ', ' + date.getFullYear(),
+        })
     }
 
     SideNavEventDisplay = () => {
@@ -334,25 +334,25 @@ class Dashboard extends Component {
                             <this.SideNavEventDisplay/>
                         </div>
                     </div>
-                    <div className="col-md-9 offset-md-3 mt-3">
+                    <div className="col-md-9 offset-md-3 mt-4">
                         <div className="text-center mb-3">
                             <div className="calendar-title">
                                 <div className="row">
-                                    <div className="col-3">
-                                        <button onClick={this.GotoPrevMonth} className="btn text-dark pr-2"><i className="fas fa-chevron-left"/></button>
+                                    <div className="col-1">
+                                        <button onClick={this.GotoPrevMonth} className="btn"><FontAwesomeIcon icon={faChevronLeft}/></button>
                                     </div>
-                                    <div className="col-6">
+                                    <div className="col-10">
                                         <span className="displayedMonth">{this.ConvertMonth(this.state.currentMonth)} {this.state.currentYear}</span>
                                     </div>
-                                    <div className="col-3">
-                                        <button onClick={this.GotoNextMonth} className="btn text-dark pl-2"><i className="fas fa-chevron-right"/></button>
+                                    <div className="col-1">
+                                        <button onClick={this.GotoNextMonth} className="btn"><FontAwesomeIcon icon={faChevronRight}/></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="card">
                             <div className="card-body p-0 m-0">
-                                <div className="table-responsive">
+                                <div className="table-responsive-lg">
                                     <table className="table table-bordered table-standard mb-0" style={{height: '480px'}}>
                                         <thead>
                                             <tr>

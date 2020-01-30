@@ -1,0 +1,18 @@
+
+* {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+#deadline td {
+    padding: 12px !important;
+}
+
+#deadline th {
+    padding: 12px !important;
+}
+
+#deadline tr {
+    /* border-bottom: 1px solid black; */
+    /* border-top: 1px solid black; */
+    /* border-collapse: collapse; */
+}

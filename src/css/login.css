@@ -11,6 +11,10 @@ div {
     transition: .3s;
 }
 
+.card {
+    padding: 0!important;
+}
+
 .card-body form input {
     font-size: .95rem;
 }
@@ -54,7 +58,7 @@ div {
 }
 
 #login-btn button{
-    background: #cfd7da;
+    background: rgb(1, 168, 220);
     color: white;
     font-size: 1rem;
 }
