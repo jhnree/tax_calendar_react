@@ -24,14 +24,12 @@ class Dashboard extends Component {
 
     componentDidMount(){
         let date = new Date();
-        // let concatDate = date.getFullYear() + '-' + this.standardizedMonth(date.getMonth()) + '-' + date.getDate()
-        // console.log(concatDate)
         this.setState({
             currentMonth:date.getMonth(),
             currentYear:date.getFullYear(),
             dateToday:this.ConvertMonth(date.getMonth()) + ' ' + date.getDate() + ', ' + date.getFullYear(),
             dayToday:this.ConvertDay(date.getDay()),
-        })
+        });
     }
 
     ConvertDay = (day) => {
@@ -57,8 +55,7 @@ class Dashboard extends Component {
     EventList = (year, month, day) => {
         let date = new Date();
         let concatDate = date.getFullYear() + '-' + this.standardizedMonth(date.getMonth()) + '-' + date.getDate()
-        // console.log(concatDate)
-        const ApiLink = 'api/dailyEvent'
+        const ApiLink = 'api/dailyEvent';
         fetch(ApiLink, 
                 {
                     method:'get', 
@@ -81,7 +78,7 @@ class Dashboard extends Component {
             })
             
         })
-        .catch(console.log())
+        .catch(console.log());
     }
 
     isToday = (month, day, year) => {
@@ -115,7 +112,7 @@ class Dashboard extends Component {
             if(val['event_deadline'] === date){
                 arr.push(val);
             }
-        })
+        });
         return arr;
     }
 
@@ -125,45 +122,45 @@ class Dashboard extends Component {
             td.push(<div className="event avoid-clicks" key={val['id']} >
                         {val['event_title']}
                     </div>)
-        })
+        });
         return td;
     }
 
     dayClick(event) {
-        var eventDate = event.target.dataset.value
-        var events = this.state.EventList
-        var arr = []
-        var date = new Date(eventDate)
+        var eventDate = event.target.dataset.value;
+        var events = this.state.EventList;
+        var arr = [];
+        var date = new Date(eventDate);
         events.forEach((val, index)=>{
             if(val['event_deadline'] === eventDate){
-                arr.push(val)
+                arr.push(val);
             }
-        })
+        });
         this.setState({ 
             eventToDisplay: arr.length ? arr : [],
             dayToday: this.ConvertDay(date.getDay()),
             dateToday: this.ConvertMonth(date.getMonth()) + ' ' + date.getDate() + ', ' + date.getFullYear(),
-        })
+        });
     }
 
     SideNavEventDisplay = () => {
-        var dayClicked = this.state.eventToDisplay
-        var jsxToReturn = []
+        var dayClicked = this.state.eventToDisplay;
+        var jsxToReturn = [];
         const title = {
             fontSize: '1.3rem',
             fontWeight: '600',
             align: 'center'
-        }
+        };
 
         const description = {
             fontSize: '1rem',
             fontWeight: '300',
-        }
+        };
         
         const remarks = {
             fontSize: '.8rem',
             fontWeight: '100',
-        }
+        };
 
         if(dayClicked.length){
             dayClicked.forEach((val, index) => {
@@ -190,7 +187,7 @@ class Dashboard extends Component {
                                 <hr/>
                             </div>)
         }
-        return jsxToReturn
+        return jsxToReturn;
     }
     
     TableBody = () => {
@@ -205,10 +202,10 @@ class Dashboard extends Component {
         
         if(currentYear !== ''){
             month = this.state.currentMonth;
-            year = this.state.currentYear
+            year = this.state.currentYear;
         }
-        startDay = new Date(`${month + 1}-01-${year}`)
-        lastDay = new Date(year, month + 1, 0)
+        startDay = new Date(`${month + 1}-01-${year}`);
+        lastDay = new Date(year, month + 1, 0);
         var week1 = this.ISO_numeric_date(startDay);
         var firstRow = [];
         var followingRow = [];
@@ -223,22 +220,11 @@ class Dashboard extends Component {
             }
             else{
                 let event = this.hasEvent(year,month,day);
-                if(this.isToday(month, day, year)){
-                    if(typeof event === 'undefined'){
-                        firstRow.push(<td key={i} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span className="today">{day}</span></td>);
-                    }
-                    else{
-                        firstRow.push(<td key={i} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span className="today">{day}</span>{this.sample(i, event, day)}</td>);
-                    }
-                }
-                else{
-                    if(typeof event === 'undefined'){
-                        firstRow.push(<td key={i} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span>{day}</span></td>);
-                    }
-                    else{
-                        firstRow.push(<td key={i} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span>{day}</span>{this.sample(i, event, day)}</td>);
-                    }
-                }
+                firstRow.push(
+                    <td key={i} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button">
+                        <span className={ this.isToday(month, day, year) ? "today" : ""}>{day}</span>
+                        {typeof event === 'undefined' ? <></> : this.sample(i, event, day)}
+                    </td>);
                 day++;
             }
         }
@@ -251,28 +237,17 @@ class Dashboard extends Component {
                 if(day!==lastDay.getDate()){
                     day++;
                     let event = this.hasEvent(year,month,day);
-                    if(this.isToday(month, day, year)){
-                        if(typeof event === 'undefined'){
-                            col.push(<td key={d} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span className="today">{day}</span></td>)
-                        }
-                        else{
-                            col.push(<td key={d} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span className="today">{day}</span>{this.sample(i, event, day)}</td>)
-                        }
-                    }
-                    else{
-                        if(typeof event === 'undefined'){
-                            col.push(<td key={d} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span>{day}</span></td>)
-                        }
-                        else {
-                            col.push(<td key={d} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button"><span>{day}</span>{this.sample(i, event, day)}</td>)
-                        }
-                    }
+                    col.push(
+                        <td key={d} onClick={this.dayClick.bind(this)} data-value={year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day)} className="date-button">
+                            <span className={this.isToday(month, day, year) ? "today" : ""}>{day}</span>
+                            {typeof event === 'undefined' ? <></> : this.sample(i, event, day)}
+                        </td>);
                 }
                 else{
-                    col.push(<td key={d}></td>)
+                    col.push(<td key={d}></td>);
                 }
             }
-            followingRow.push(<tr key={x}>{col}</tr>)
+            followingRow.push(<tr key={x}>{col}</tr>);
         }
         return(
             <tbody className="calendar">
@@ -281,7 +256,7 @@ class Dashboard extends Component {
                 </tr>
                 {followingRow}
             </tbody>
-        )
+        );
     }
 
     GotoPrevMonth = () => {
@@ -291,12 +266,12 @@ class Dashboard extends Component {
             this.setState({
                 currentMonth:11,
                 currentYear:currYear-1,
-            })
+            });
         }
         else{
             this.setState({
                 currentMonth:currMonth-1,
-            })
+            });
         }
     }
 
@@ -307,12 +282,12 @@ class Dashboard extends Component {
             this.setState({
                 currentMonth:0,
                 currentYear:currYear+1,
-            })
+            });
         }
         else{
             this.setState({
                 currentMonth:currMonth+1,
-            })
+            });
         }
     }
 
