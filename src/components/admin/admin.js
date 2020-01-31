@@ -34,15 +34,23 @@ class Admin extends Component{
     }
 
     componentDidMount() {
+        let getData = [];
+       axios.get('/api/get-event-list')
+       .then(data => {
+           const eventsList = data.data;
+           this.setState({ eventsList })
+       })
+
+    //    this.TestAlert(getInputValue);
+    }
+
+    dateFormat = () => {
         let date = new Date();
         this.setState({
             currentMonth: date.getMonth(),
             currentYear: date.getFullYear(),
             dateToday: this.ConvertMonth(date.getMonth()) + ' ' + date.getDate() + ', ' + date.getFullYear(),
         });
-        
-        this.fetchEventList();
-
     }
 
     handleChangeFirst = (e) => {
@@ -69,20 +77,37 @@ class Admin extends Component{
         });
     }
 
-    fetchEventList() {
-        var arr = [];
-        axios.get('/api/get-event-list')
-        .then(data => {
-            var newData = data.data;
-            // console.log(newData)
-            newData.forEach((value, key) => {
-                arr.push(<p key={key}>{value.event_deadline}</p>)
-            })
-            console.log(arr)
-            // return arr;
-        })
-        // return arr;
+    StandardizedMonth = (month) => {
+        var newMonth = month + 1;
+        if (newMonth.toString().length === 1) {
+            return '0' + newMonth;
+        }
+        return newMonth;
     }
+
+    StandardizedDay = (day) => {
+        if (day.toString().length === 1) {
+            return '0' + day;
+        }
+        return day;
+    }
+
+    // fetchEventList = (year,month,day) => {
+    //     // var date = year + '-' + this.standardizedMonth(month) + '-' + this.standardizedDay(day);
+    //     var arr = [];
+    //     var eventsQWE = this.state.eventsList;
+    //     axios.get('/api/get-event-list')
+    //     .then(data => {
+    //         eventsQWE = data.data;
+    //         eventsQWE.forEach((val, index) => {
+    //             if(val['event_deadline'] !== ''){
+    //                 arr.push(val);
+    //             }
+    //         })
+    //         // return arr;
+    //     })
+    //     // return arr;
+    // }
 
     ConvertMonth = (month) => {
         let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -99,12 +124,11 @@ class Admin extends Component{
         return newDate;
     }
     // getting the specific date of each td
-    TestAlert = (event) => {
-        // alert(event.target.dataset.value);
-        sessionStorage.setItem('date_now', event.target.dataset.value);
-        this.setState({
-            eventDate: sessionStorage.getItem('date_now')
-        });
+    TestAlert = (event, getInputValue) => {
+        // sessionStorage.setItem('date_now', event.target.dataset.value);
+        // this.setState({
+        //     eventDate: sessionStorage.getItem('date_now')
+        // });
     }
 
     // submit data
@@ -143,19 +167,17 @@ class Admin extends Component{
         });
     }
 
-    StandardizedMonth = (month) => {
-        var newMonth = month + 1;
-        if (newMonth.toString().length === 1){
-            return '0' + newMonth;
+    isToday = (month, day, year) => {
+        var date = new Date();
+        var m = date.getMonth();
+        var d = date.getDate();
+        var y = date.getFullYear();
+        var today = m + '-' + d + '-' + y;
+        var toCheck = month + '-' + day + '-' + year;
+        if (today === toCheck) {
+            return true;
         }
-        return newMonth;
-    }
-
-    StandardizedDay = (day) => {
-        if(day.toString().length === 1){
-            return '0' + day;
-        }
-        return day;
+        return false;
     }
 
     TableBody = () => {
@@ -182,18 +204,19 @@ class Admin extends Component{
         }
         for (var i = 0; i < 7; i++) {
             if (week1 > i) {
-                firstRow.push(<td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={ year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day) + this.state.eventName} key={i}></td>);
-            }
-            else {
-
-                firstRow.push(
-                    <td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day)} key={i}>{day}
-                        <div className="event_name avoid-clicks">
-                            {this.fetchEventList()}
-                        </div>
-                    </td>);
-                day++;
-
+                firstRow.push(<td className="rowsssss avoid-clicks" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={ year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day) + this.state.eventName} key={i}></td>);
+            }else {
+                {this.state.eventsList.map(queryEvent => {
+                    if(this.TestAlert() === queryEvent.event_deadline){                        
+                        firstRow.push(
+                            <td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day)} key={i}>{day}
+                                <div className="event_name avoid-clicks" key={queryEvent.id}>
+                                    {queryEvent.event_title}
+                                </div>
+                            </td>);
+                        day++;
+                    }
+                })}
             }
         }
         day--;

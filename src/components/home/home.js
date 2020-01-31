@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import '../../css/dashboard.css';
 import Header from './header';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 
 class Dashboard extends Component {
 
