@@ -145,7 +145,7 @@ class Header extends Component {
                                         <td colSpan="2">{value['event_title']}</td>
                                         <td className="text-center"><Badge style={{ width: '70px', height: '20px', paddingTop: '5px', fontSize: '.75rem' }} variant="danger">1 day</Badge></td>
                                     </tr>
-                            }) : <> </>}
+                            }) : <></>}
                             {threeDays ? threeDays.map((value, key) => {
                                 return <tr key={value['id']}>
                                         <td colSpan="2">{value['event_title']}</td>
