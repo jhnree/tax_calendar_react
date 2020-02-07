@@ -9,6 +9,7 @@ import AdminSidebar from './AdminSidebar'
 // images
 import Back from '../../img/back.png'
 import Next from '../../img/next.png'
+import Preloader from '../../img/808.gif'
 
 class Admin extends Component{
     constructor(props) {
@@ -24,7 +25,8 @@ class Admin extends Component{
             eventDescription: '',
             error: null,
             showEvents: [],
-            eventRemarks: ''
+            eventRemarks: '',
+            isLoading: true
         }
         this.handleChangeFirst = this.handleChangeFirst.bind(this);
         this.handleChangeSecond = this.handleChangeSecond.bind(this);
@@ -44,7 +46,6 @@ class Admin extends Component{
            const data = response.data;
             let eventArr = [];
         //    console.log(data);
-
             // display events on specific date
 
             data.forEach((val, index) => {
@@ -54,15 +55,14 @@ class Admin extends Component{
             })
             this.setState({
                 showEvents: eventArr.length ? eventArr : [],
-                eventsList: data
+                eventsList: data,
+                isLoading: false
             })
             
         }).catch(errors => {
             console.log(errors);
         })
-        
     }
-
 
     Today = (month, day, year) => {
         var date = new Date();
@@ -92,14 +92,27 @@ class Admin extends Component{
 
     getEvt = (i, event , day) => {
         var td = [];
-        event.forEach((val, index) => {
-            td.push(
-                <div className="event_name avoid-clicks" key={val['id']}>
-                    {val['event_title']}
-                </div>
-            )
-        })
+        var isLoading = this.state.isLoading;
 
+        // console.log(isLoading);
+
+        if(isLoading) {
+            
+                return (
+                    <img src={Preloader} style={{ height: '10px' }} alt=""></img>
+                )
+            
+        } else {
+            event.forEach((val, index) => {
+                td.push(
+                    <div className="event_name avoid-clicks" key={val['id']}>
+                        <p>{val['event_title']}</p>
+                        <p>{val['event_description']}</p>
+                        <p>{val['remarks']}</p>
+                    </div>
+                )
+            })
+        }
         return td;
     }
 
@@ -129,6 +142,35 @@ class Admin extends Component{
         }
         return day;
     }
+
+    viewEvents = () => {
+        let date = new Date();
+        let setDate = date.getFullYear() + '-' + this.StandardizedMonth(date.getMonth()) + '-' + date.getDate();
+        // console.log(setDate);
+        axios.get('/api/event')
+        .then(response => {
+            const data = response.data;
+            let eventArr = [];
+            //    console.log(data);
+
+            // display events on specific date
+
+            data.forEach((val, index) => {
+                if (val.event_deadline === setDate) {
+                    eventArr.push(val);
+                }
+            })
+            this.setState({
+                showEvents: eventArr.length ? eventArr : [],
+                eventsList: data,
+                isLoading: false
+            })
+
+        }).catch(errors => {
+            console.log(errors);
+        })
+    }
+
 
     ConvertMonth = (month) => {
         let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -179,38 +221,11 @@ class Admin extends Component{
         this.setState({
             eventDate: sessionStorage.getItem('date_now')
         });
-
     }
-
-    // event = (year, month, day) => {
-    //     const eventApi = '/api/event';
-    //     let date = new Date();
-    //     let concatDate = date.getFullYear() + '-' + this.StandardizedMonth(date.getMonth()) + '-' + date.getDate()
-
-    //     fetch(eventApi, {
-    //         method: 'get',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json'
-    //         },
-    //     })
-    //     .then(response => response.json())
-    //     .then(json => {
-    //         let eventArr = [];
-    //         json.forEach((val, index) => {
-    //             if(val.event_deadline === concatDate){
-    //                 eventArr.push(val)
-    //             }
-    //         })
-    //         this.setState({
-    //             showEvents: eventArr.length ? eventArr : [],
-    //             eventsList: json
-    //         })
-    //     })
-    //     .catch( errors => {
-    //         console.log(errors);
-    //     })
-    // }
+    
+    ViewOrAddEvent = (event) => {
+        console.log('clicked');
+    }
 
     // submit data
 
@@ -248,6 +263,7 @@ class Admin extends Component{
         });
     }
 
+
     TableBody = () => {
         let day = 1;
         var date = new Date();
@@ -273,13 +289,15 @@ class Admin extends Component{
         }
         for (var i = 0; i < 7; i++) {
             if (week1 > i) {
-                firstRow.push(<td className="rowsssss avoid-clicks" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day) + this.state.eventName} key={i}></td>);
+                firstRow.push(<td className="rowsssss avoid-clicks" onClick={this.TestAlert} data-toggle="modal" data-target="#viewEvent" data-value={year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day) + this.state.eventName} key={i}></td>);
             }else {
+                // if there is event on that day
                 let event = this.hasEvents(year, month, day);
+
                 firstRow.push(
-                    <td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day)} key={i}>
-                        <span className={this.Today(month, day, year) ? "today" : ""}>{day}</span>
-                        {typeof event === 'undefined' ? <> </> : this.getEvt(i,event,day)}    
+                    <td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#viewEvent" data-value={year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day)} key={i}>
+                            <span className={this.Today(month, day, year) ? "today" : ""}>{day}</span>
+                        {typeof event === 'undefined' ? <> </> : this.getEvt(i, event, day) }   
                     </td>);
                 day++;
             }
@@ -290,11 +308,13 @@ class Admin extends Component{
             for (var d = 1; d <= 7; d++) {
                 if (day !== lastDay.getDate()) {
                     day++;
+                    // if there is event on that day
                     let event = this.hasEvents(year,month,day);
+                
                     col.push(
-                    <td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#exampleModalLong" data-value={year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day)} key={d}>
+                        <td className="rowsssss" onClick={this.TestAlert} data-toggle="modal" data-target="#viewEvent" data-value={year + '-' + this.StandardizedMonth(month) + '-' + this.StandardizedDay(day)} key={d}>
                         <span className={this.Today(month, day, year) ? "today" : ""}>{day}</span>
-                            {typeof event === 'undefined' ? <> </> : this.getEvt(i, event, day)}
+                            {typeof event === 'undefined' ? <> </> : this.getEvt(i, event, day) }
                      </td>
                     )
                 }
@@ -358,6 +378,52 @@ class Admin extends Component{
                             <div className="text-center mt-5 mb-3">
                                 <div className="calendar-title">
                                     <div className="row">
+
+
+                                        <div className="modal fade" id="eventModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div className="modal-dialog modal-dialog-centered" role="document">
+                                                <div className="modal-content">
+                                                    <div className="modal-header">
+                                                        <h5 className="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div className="modal-body">
+                                                        list of events
+                                                    </div>
+                                                    <div className="modal-footer">
+                                                        <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                        <button type="button" className="btn btn-primary">Save changes</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div className="modal fade" id="viewEvent" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                            <div className="modal-dialog " role="document">
+                                                <div className="modal-content">
+                                                    <div className="modal-header">
+                                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div className="modal-body">
+                                                       <div className="row">
+                                                            <div className="col-6">
+                                                                <button className="btn btn-primary" data-toggle="modal" data-target="#eventModal">View Events</button>
+                                                            </div>
+                                                            <div className="col-6">
+                                                                <button className="btn btn-success" data-toggle="modal" data-target="#exampleModalLong">Add Event</button>
+                                                            </div>
+                                                       </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
                                         <div className="modal fade" id="exampleModalLong" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
                                             <div className="modal-dialog" role="document">
                                                 <div className="modal-content">
@@ -376,7 +442,7 @@ class Admin extends Component{
                                                                 <input className="form-control" value={this.state.eventDescription} name="event_description" onChange={this.handleChangeSecond} placeholder="Event Description" />
                                                             </div>
                                                             <div className="form-group">
-                                                                <input className="form-control" value={this.state.eventDate} name="event_date" onChange={this.handleEventDate}/>
+                                                                <input className="form-control" value={this.state.eventDate} name="event_date" onChange={this.handleEventDate} />
                                                             </div>
                                                             <div className="form-group">
                                                                 <input className="form-control" value={this.state.eventRemarks} name="event_remarks" onChange={this.handleChangeThird} placeholder="Event Remarks" />
@@ -385,11 +451,37 @@ class Admin extends Component{
                                                         </form>
                                                     </div>
                                                     <div className="modal-footer">
+                                                        <div className="row">
+                                                            <div className="col-lg-6">
+                                                                <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                       
+                                        <div className="modal fade" id="exampleModalLong" tabIndex="-1" role="dialog" aria-labelledby="#" aria-hidden="true">
+                                            <div className="modal-dialog" role="document">
+                                                <div className="modal-content">
+                                                    <div className="modal-header" style={{ background: "linear-gradient(to left, #0F4C75 , #3282B8)", color: 'white' }}>
+                                                        <h5 className="modal-title  text-center" id="exampleModalLongTitle">Add Event</h5>
+                                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div className="modal-body">
+
+                                                    </div>
+                                                    <div className="modal-footer">
                                                         <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
+
+
                                         <div className="col-3">
                                             <button onClick={this.GotoPrevMonth} className="btn text-dark pr-2" to="/"><img id="sidebarIcon" src={Back} alt=""/></button>
                                         </div>

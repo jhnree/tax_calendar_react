@@ -8,6 +8,7 @@ import Users from '../../img/users.png'
 import Reports from '../../img/reports.png'
 import Payments from '../../img/payments.png'
 import TaxAlert from '../../img/tax_alert.png'
+import EventIcon from '../../img/event.png'
 
 class AdminSidebar extends Component{
     render(){
@@ -35,13 +36,13 @@ class AdminSidebar extends Component{
                                 <Link className="customFont" to="/Admin/UserCounts" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Users<img id="sidebarIcon" src={Users} alt="" /></Link>
                             </div>
                         </li>
-                        {/* <li className="nav-item">
+                        <li className="nav-item">
                             <div className="nav-link" id="customSideBar">
                                 <span data-feather="bar-chart-2"></span>
-                                <div className="customFont">Reports<img id="sidebarIcon" src={Reports} alt="" /></div>
+                                <div className="customFont">Event Dashboard<img id="sidebarIcon" src={EventIcon} alt="" /></div>
                             </div>
                         </li>
-                        <li className="nav-item">
+                        {/* <li className="nav-item">
                             <div className="nav-link" id="customSideBar">
                                 <span data-feather="layers"></span>
                                 <div className="customFont">e-Payments<img id="sidebarIcon" src={Payments} alt="" /></div>

@@ -11,8 +11,8 @@ import FemaleUser from '../../img/female_user.png'
 import Users from '../../img/users1.png'
 import AddUser from '../../img/add_user.png'
 
-let NumberOfMale = 70;
-let NumberOfFemale = 30;
+let NumberOfMale = 703333;
+let NumberOfFemale = 3444430;
 let result = NumberOfMale + NumberOfFemale;
 /**
  * !! computing into percentage 

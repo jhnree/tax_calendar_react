@@ -7,6 +7,7 @@ import Admin from './admin/admin';
 import UserCount from './admin/UserCounts';
 import TaxAlert from './admin/taxAlert'
 import AddUser from './admin/addUser'
+import EventDashboard from './admin/eventDashboard'
 import { ProtectedRoute } from './protected.route'
 
 
@@ -22,6 +23,7 @@ class App extends Component {
                         <Route exact path="/Admin/UserCounts" component={UserCount}></Route>
                         <Route exact path="/Admin/TaxAlert" component={TaxAlert}></Route>
                         <Route exact path="/Admin/AddUser" component={AddUser}></Route>
+                        <Route exact path="/Admin/EventDashboard" component={EventDashboard}></Route>
                         <Route path="*" component={ () => "Error 404: Page Not Found" }></Route>
                     </Switch>
                 </div>
